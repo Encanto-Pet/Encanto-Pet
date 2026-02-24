@@ -1,0 +1,162 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  min-height: 100vh;
+}
+
+/* ===== LADO LOGIN ===== */
+
+.login-section {
+  flex: 1;
+  padding: 60px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.logo {
+  width: 120px;
+  margin-bottom: 30px;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  color: #000;
+}
+
+.subtitle {
+  margin-bottom: 30px;
+  color: #555;
+}
+
+.link-destaque {
+  color: #e6a400;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.link-destaque:hover {
+  text-decoration: underline;
+}
+
+/* FORM */
+
+.form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+input {
+  padding: 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+input:focus {
+  outline: 2px solid #e6a400;
+  border-color: #e6a400;
+}
+
+.senha-wrapper {
+  position: relative;
+  display: flex;
+}
+
+.toggle-senha {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.erro {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 4px;
+  min-height: 18px;
+}
+
+.esqueci {
+  font-size: 0.9rem;
+  margin-bottom: 25px;
+  text-decoration: underline;
+  color: #333;
+}
+
+.btn-login {
+  background-color: #e6a400;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-login:hover {
+  background-color: #cc9200;
+}
+
+/* ===== LADO IMAGEM ===== */
+
+.image-section {
+  flex: 1;
+  background: linear-gradient(to bottom, #ffffff, #ffe7a3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dog-img {
+  max-width: 90%;
+  height: auto;
+}
+
+/* ===== RESPONSIVO ===== */
+
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .image-section {
+    display: none;
+  }
+
+  .login-section {
+    padding: 40px 20px;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+}
