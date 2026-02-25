@@ -1,71 +1,53 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login | Encanto Pet</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Encanto Pet - Login</title>
+
+  <!-- Fonte Baloo -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
   <main class="container">
 
-    <!-- LADO ESQUERDO -->
-    <section class="login-section" aria-labelledby="titulo-login">
+    <section class="left">
 
-      <img src="../../../assets/img/logo.svg" alt="Logo Encanto Pet" class="logo">
+     
 
-      <h1 id="titulo-login">
-        Pronto para encher <br />
+      <h1>
+        Pronto para encher<br>
         o carrinho?
       </h1>
 
       <p class="subtitle">
-        Se você não tem uma conta,
-        <a href="#" class="link-destaque">crie uma aqui!</a>
+        Se você não tem uma <br>conta, 
+        <a href="#">crie uma aqui!</a>
       </p>
 
-      <form id="loginForm" novalidate>
+      <form class="form">
 
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input 
-            type="email" 
-            id="email" 
-            name="email"
-            placeholder="Insira o seu email"
-            required
-            aria-describedby="emailErro"
-          />
-          <span class="erro" id="emailErro"></span>
+        <input type="email" placeholder="Insira o seu email" required>
+
+        <div class="password-wrapper">
+            <input type="password" id="senha" placeholder="********" required>
+
+        <button type="button" id="toggleSenha">
+        <img src="../../../assets/icon/cachorro-olho-fechado.svg"
+          data-aberto="../../../assets/icon/cachorro-olho-aberto.svg"
+          data-fechado="../../../assets/icon/cachorro-olho-fechado.svg"
+          id="iconeSenha"
+        >
+        </button>
         </div>
+        <a href="#" class="forgot">Esqueci a senha</a>
 
-        <div class="form-group">
-          <label for="senha">Senha</label>
-          <div class="senha-wrapper">
-            <input 
-              type="password" 
-              id="senha" 
-              name="senha"
-              placeholder="********"
-              required
-              minlength="6"
-              aria-describedby="senhaErro"
-            />
-            <button 
-              type="button" 
-              class="toggle-senha"
-              aria-label="Mostrar ou esconder senha"
-            >
-              <img src="../../../assets/icon/cachorro-olho-aberto.svg" alt="">
-            </button>
-          </div>
-          <span class="erro" id="senhaErro"></span>
-        </div>
-
-        <a href="#" class="esqueci">Esqueci a senha</a> <br><br>
-
-        <button type="submit" class="btn-login">
+        <button type="submit" class="btn">
           Entrar
         </button>
 
@@ -73,13 +55,12 @@
 
     </section>
 
-    <!-- LADO DIREITO -->
-    <section class="image-section" aria-hidden="true">
-      <img src="dog.png" alt="" class="dog-img">
+    <section class="right">
+      <img src="../../../assets/img/cachorro login.svg" alt="">
+       <img src="../../../assets/img/logo.svg" alt="Logo Encanto Pet" class="logo">
     </section>
 
   </main>
 
-  <script src="script.js"></script>
 </body>
 </html>

@@ -1,16 +1,19 @@
 const form = document.getElementById("loginForm");
 const email = document.getElementById("email");
-const senha = document.getElementById("senha");
 const emailErro = document.getElementById("emailErro");
 const senhaErro = document.getElementById("senhaErro");
-const toggleSenha = document.querySelector(".toggle-senha");
 
 // Mostrar / esconder senha
-toggleSenha.addEventListener("click", () => {
-  const tipo = senha.getAttribute("type") === "password" ? "text" : "password";
-  senha.setAttribute("type", tipo);
-});
+const aberto = iconeSenha.dataset.aberto;
+const fechado = iconeSenha.dataset.fechado;
 
+if (senha.type === "password") {
+  senha.type = "text";
+  iconeSenha.src = aberto;
+} else {
+  senha.type = "password";
+  iconeSenha.src = fechado;
+}
 // Validação
 form.addEventListener("submit", (e) => {
   e.preventDefault();
