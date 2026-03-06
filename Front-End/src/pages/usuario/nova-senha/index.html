@@ -30,33 +30,44 @@
         <a href="../cadastro/index.html">crie uma aqui!</a>
       </p>
 
-      <form class="form">
+      <form class="form-container">
 
-        <input type="email" placeholder="Insira o seu email" required>
+  <div class="input-group">
+    <label for="nova-senha">Nova senha</label>
 
-        <div class="password-wrapper">
-            <input type="password" id="senha" placeholder="********" required>
+    <div class="password-wrapper">
+      <input type="password" id="nova-senha" placeholder="********" required>
 
-        <button type="button" id="toggleSenha">
-        <img src="../../../assets/icon/cachorro-olho-fechado.svg"
-          data-aberto="../../../assets/icon/cachorro-olho-aberto.svg"
-          data-fechado="../../../assets/icon/cachorro-olho-fechado.svg"
-          id="iconeSenha"
-        >
-        </button>
-        </div>
-        <a href="../esqueceu-a-senha/index.html" class="forgot">Esqueci a senha</a>
+      <button type="button">
+        <img src="../../../assets/icon/cachorro-olho-fechado.svg">
+      </button>
+    </div>
+  </div>
 
-        <button type="submit" class="btn">
-          Entrar
-        </button>
 
-      </form>
+  <div class="input-group">
+    <label for="confirma-senha">Confirmação da senha</label>
+
+    <div class="password-wrapper">
+      <input type="password" id="confirma-senha" placeholder="********" required>
+
+      <button type="button">
+        <img src="../../../assets/icon/cachorro-olho-fechado.svg">
+      </button>
+    </div>
+  </div>
+
+
+  <button type="submit" class="btn">
+    Alterar
+  </button>
+
+</form>
 
     </section>
 
     <section class="right">
-      <img src="../../../assets/img/cachorro login.svg" alt="">
+      <img src="../../../assets/img/Marrom.svg" alt="">
        <img src="../../../assets/img/logo.svg" alt="Logo Encanto Pet" class="logo">
     </section>
 
