@@ -15,4 +15,4 @@
         |<a href="/bands/delete/{{$b->id}}">Deletar</a></td>
     <tr>
     @endforeach
-</table>    
+</table>   
