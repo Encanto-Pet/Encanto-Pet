@@ -1,0 +1,61 @@
+/* Importando a fonte para garantir */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f7f6;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.container {
+    display: flex; /* Faz um ficar do lado do outro */
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    gap: 50px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.forms {
+    width: 400px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #f9f9f9;
+}
+
+.btn-salvar {
+    background-color: #58913d;
+    color: white;
+    border: none;
+    padding: 15px;
+    width: 100%;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Estilo do Card que o JS vai criar */
+.card-produto {
+    width: 280px;
+    padding: 20px;
+    border-radius: 15px;
+    background: #fff;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.card-produto img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}

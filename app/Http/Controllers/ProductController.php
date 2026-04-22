@@ -12,7 +12,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        //
+        return view('product.index', ['product' => Product::all()]);
     }
 
     /**
@@ -20,7 +20,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('products.create');
+        return view('product.create');
     }
 
     /**
@@ -28,15 +28,8 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Product $product)
-    {
-        //
+        Product::create($request->all());
+        return redirect('/product');
     }
 
     /**
@@ -44,7 +37,7 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return view('product.edit', ['product' => $product]);
     }
 
     /**
@@ -52,14 +45,16 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $product->update($request->all());
+        return redirect('/product');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product)
+    public function delete(Product $product)
     {
-        //
+        $product->delete();
+        return redirect('/product');
     }
 }
