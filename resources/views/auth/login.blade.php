@@ -1,47 +1,113 @@
 <x-guest-layout>
-    <!-- Session Status -->
+
+    <!-- STATUS -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
+    <main class="container">
 
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+        <!-- ESQUERDA -->
+        <section class="left">
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+            <h1>
+                Pronto para encher<br>
+                o carrinho?
+            </h1>
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="current-password" />
+            <p class="subtitle">
+                Se você não tem uma conta, 
+                <a href="{{ route('register') }}">crie uma aqui!</a>
+            </p>
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+            <form method="POST" action="{{ route('login') }}" class="form">
+                @csrf
 
-        <!-- Remember Me -->
-        <div class="block mt-4">
-            <label for="remember_me" class="inline-flex items-center">
-                <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
+                <!-- EMAIL -->
+                <div>
+                    <x-text-input 
+                        id="email"
+                        class="input"
+                        type="email"
+                        name="email"
+                        :value="old('email')"
+                        placeholder="Insira o seu email"
+                        required 
+                        autofocus 
+                        autocomplete="username" 
+                    />
+                    <x-input-error :messages="$errors->get('email')" class="error" />
+                </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
+                <!-- SENHA -->
+                <div class="password-wrapper">
 
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
-        </div>
-    </form>
+                    <x-text-input 
+                        id="senha"
+                        class="input"
+                        type="password"
+                        name="password"
+                        placeholder="********"
+                        required 
+                        autocomplete="current-password" 
+                    />
+
+                    <button type="button" id="toggleSenha" aria-label="Mostrar senha">
+                        <img 
+                          src="{{ asset('assets/icon/cachorro-olho-fechado.svg') }}"
+                          data-aberto="{{ asset('assets/icon/cachorro-olho-aberto.svg') }}"
+                          data-fechado="{{ asset('assets/icon/cachorro-olho-fechado.svg') }}"
+                          id="iconeSenha"
+                          alt="Mostrar senha"
+                        >
+                    </button>
+
+                </div>
+
+                <x-input-error :messages="$errors->get('password')" class="error" />
+
+                <!-- ESQUECEU SENHA -->
+                @if (Route::has('password.request'))
+                    <a href="{{ route('password.request') }}" class="forgot">
+                        Esqueci a senha
+                    </a>
+                @endif
+
+                <!-- REMEMBER -->
+                <label class="check">
+                    <input type="checkbox" name="remember">
+                    Lembrar a senha
+                </label>
+
+                <!-- BOTÃO -->
+                <x-primary-button class="btn">
+                    Entrar
+                </x-primary-button>
+
+            </form>
+
+        </section>
+
+        <!-- DIREITA -->
+        <section class="right">
+            <img src="{{ asset('assets/img/cachorro login.svg') }}" alt="Cachorro feliz">
+            <img src="{{ asset('assets/img/logo.svg') }}" alt="Logo Encanto Pet" class="logo">
+        </section>
+
+    </main>
+
+    <!-- JS SENHA -->
+    <script>
+        const toggle = document.getElementById('toggleSenha');
+        const senha = document.getElementById('senha');
+        const icone = document.getElementById('iconeSenha');
+
+        toggle.addEventListener('click', () => {
+            const isPassword = senha.type === 'password';
+            senha.type = isPassword ? 'text' : 'password';
+
+            icone.src = isPassword 
+                ? icone.dataset.aberto 
+                : icone.dataset.fechado;
+        });
+    </script>
+
 </x-guest-layout>
