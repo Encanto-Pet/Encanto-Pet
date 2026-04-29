@@ -1,52 +1,127 @@
 <x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
+<link rel="stylesheet" href="{{ asset('css/cadastro.css') }}">
+<main class="container">
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+    <!-- ESQUERDA -->
+    <section class="left">
+
+        <h1>
+            Seu pet autorizou<br>
+            esse cadastro!
+        </h1>
+
+        <p class="subtitle">
+            Mas caso já tenha cadastro,<br> 
+            <a href="{{ route('login') }}">Acesse sua conta!</a>
+        </p>
+
+        <div class="wrapper">
+            <form method="POST" action="{{ route('register') }}" class="form">
+                @csrf
+
+                <!-- NOME -->
+                <div class="input-group">
+                    <label for="name">Nome</label>
+
+                    <x-text-input 
+                        id="name"
+                        name="name"
+                        type="text"
+                        class="input"
+                        :value="old('name')"
+                        required
+                        autofocus
+                        autocomplete="name"
+                    />
+
+                    <x-input-error :messages="$errors->get('name')" class="error" />
+                </div>
+
+                <!-- EMAIL -->
+                <div class="input-group">
+                    <label for="email">Email</label>
+
+                    <x-text-input 
+                        id="email"
+                        name="email"
+                        type="email"
+                        class="input"
+                        :value="old('email')"
+                        required
+                        autocomplete="username"
+                    />
+
+                    <x-input-error :messages="$errors->get('email')" class="error" />
+                </div>
+
+                <!-- SENHA -->
+                <div class="input-group">
+                    <label for="password">Senha</label>
+
+                    <x-text-input 
+                        id="password"
+                        name="password"
+                        type="password"
+                        class="input"
+                        required
+                        autocomplete="new-password"
+                    />
+
+                    <x-input-error :messages="$errors->get('password')" class="error" />
+                </div>
+
+                <!-- CONFIRMAR SENHA -->
+                <div class="input-group">
+                    <label for="password_confirmation">Confirmação de senha</label>
+
+                    <x-text-input 
+                        id="password_confirmation"
+                        name="password_confirmation"
+                        type="password"
+                        class="input"
+                        required
+                        autocomplete="new-password"
+                    />
+
+                    <x-input-error :messages="$errors->get('password_confirmation')" class="error" />
+                </div>
+
+                <!-- BOTÃO -->
+             
+                <!-- EXTRAS -->
+                <div class="extras">
+
+                    <label class="check">
+                        <input type="checkbox" name="remember">
+                        Lembrar a senha
+                    </label>
+
+                    <label class="check">
+                        <input type="checkbox" required>
+                        Aceito com os 
+                        <a href="#">Termos de Uso</a> 
+                        e 
+                        <a href="#">Política</a>
+                    </label>
+
+                       <x-primary-button class="btn">
+                            Finalizar!
+                        </x-primary-button>
+
+
+                </div>
+
+            </form>
         </div>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+    </section>
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+    <!-- DIREITA -->
+    <section class="right">
+        <img src="{{ asset('assets/img/imagem animais cadastro.svg') }}" alt="Cachorro feliz">
+        <img src="{{ asset('assets/img/logo.svg') }}" alt="Logo Encanto Pet" class="logo">
+    </section>
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
+</main>
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
-        </div>
-    </form>
 </x-guest-layout>

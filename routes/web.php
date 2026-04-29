@@ -23,6 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/product/edit/{product}', [ProductController::class, 'edit']);
     Route::post('/product/update/{product}', [ProductController::class, 'update']);
     Route::get('/product/delete/{product}', [ProductController::class, 'delete']);
+    Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
 });
 
 require __DIR__.'/auth.php';

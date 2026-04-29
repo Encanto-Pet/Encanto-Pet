@@ -2,7 +2,7 @@
 
     <!-- STATUS -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
-
+<link rel="stylesheet" href="{{ asset('css/login.css') }}">
     <main class="container">
 
         <!-- ESQUERDA -->
