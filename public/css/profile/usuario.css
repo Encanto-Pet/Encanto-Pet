@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family: 'Poppins', sans-serif;
+    background:#e7f0f2;
+    font-size: 15px;    
+}
+
+  /* NAVBAR */
+
+.navbar{
+    width:100%;
+    display:flex;
+    justify-content:center;
+    margin-top:20px;
+}
+
+.nav-container{
+    width:90%;
+    background:#fff;
+    border-radius:15px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px 25px;
+}
+
+  /* LOGO */
+
+.logo img{
+    width:70px;
+}
+
+  /* MENU */
+
+.menu{
+    display:flex;
+    gap: 30px;
+}
+
+.menu a{
+    text-decoration:none;
+    color:#333;
+    font-weight:500;
+    transition:0.3s;
+}
+
+.menu a:hover{
+    color:#f4a300;
+}
+
+  /* SEARCH */
+
+.nav-right{
+    display:flex;
+    align-items:center;
+    gap:60.13px;
+}
+
+.search{
+    background:#eef1f4;
+    padding:6px 10px;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+}
+
+.search input{
+    border:none;
+    background:transparent;
+    outline:none;
+    width: 250.17px;
+}
+
+  /* ICONS */
+
+.icons{
+    display:flex;
+    gap:15px;
+    font-size:18px;
+}
+
+.ph ph-bell
+
+
+
+  /* RESPONSIVIDADE */
+
+@media (max-width: 1200px){
+
+    .menu{
+        gap:15px;
+        font-size:14px;
+        }
+
+    .search input{
+        width:120px;
+        }
+
+}
+
+@media (max-width: 900px){
+
+    .nav-container{
+    flex-wrap:wrap;
+    gap:15px;
+    }
+
+    .menu{
+    order:3;
+    width:100%;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+    }
+
+    .nav-right{
+    margin-left:auto;
+    }
+
+}
+
+@media (max-width: 600px){
+
+    .search{
+    display:none;
+    }
+
+    .menu{
+    font-size:13px;
+    gap:8px;
+    }
+
+    .logo img{
+    width:55px;
+    }
+
+}

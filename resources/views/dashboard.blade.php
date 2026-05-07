@@ -1,17 +1,41 @@
-<!-- <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encanto Pet - Perfil</title>
+    <link rel="stylesheet" href="{{ asset('css/profile/usuario.css') }}">
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
+            <div class="logo">
+                <img src="../../../assets/img/logo.svg" alt="Encanto Pet">
+            </div>
+
+            <nav class="menu">
+                <a href="#">Produtos</a>
+                <a href="#">Cachorros</a>
+                <a href="#">Gatos</a>
+                <a href="#">Promoções</a>
+                <a href="#">Adote aqui!</a>
+                <a href="#">Nosso contato</a>
+            </nav>
+
+            <div class="nav-right">
+                <div class="search">
+                    <input type="text" placeholder="Pesquise produtos...">
+                    <span><img src="../../../assets/icon/lupa.svg" alt="Pesquisar"></span>
+                </div>
+
+                <div class="icons">
+                    <a href="#" alt="Notificação"> <i class="ph ph-bell"></i> </a>
+                    <a href="#"><img src="../../../assets/icon/login.svg" alt="Login"></a>
+                    <a href="#"><img src="../../../assets/icon/mundo.svg" alt="Intercionalização"></a>
                 </div>
             </div>
         </div>
-    </div>
-</x-app-layout> -->
+    </header>
+</body>
+</html>
