@@ -111,16 +111,14 @@ body{
 /* CONTAINER DA CONTA */
 .container{
     display:flex;
-    gap:60px;
+    gap:40px;
     align-items:flex-start;
     padding:40px;
-    justify-content:space-between;
 }
 
 /* conteudo */
 .content{
     flex:1;
-    max-width:900px;
     padding-top:90px;   
 }
 
@@ -131,6 +129,35 @@ body{
 .content h2{
     font-size: 24px;
     font-weight: 400;
+}
+
+.update-profile{
+    gap: 10px;
+    display:flex;
+    align-items: center;
+    color: var(--amarelo);
+    font-size: 12px;
+    padding-top: 10px;
+}
+
+.ph-pencil-simple-line{
+    font-size: 18px;
+}
+
+.profile-photo{
+    transform:translateX(400px);
+
+}
+
+.profile-overview{
+    display:flex;
+    align-items:flex-start;
+    transform:translateX(200px);
+}
+
+.profile-info{
+    padding-top: 20px;
+    
 }
 
 /* MENU LATERAL */
@@ -204,6 +231,16 @@ aside a{
 
 
   /* RESPONSIVIDADE */
+
+@media (max-width:768px){
+
+    .profile-header{
+        flex-direction:column;
+        text-align:center;
+    }
+
+}
+
 @media (max-width:768px){
 
     .menu-item{

@@ -58,19 +58,18 @@
             <a href="#" alt="Sair da conta" class="menu-item"><i class="ph ph-sign-out"></i>Sair</a>
         </aside>
         <main class="content">
-            <h2>
-                Olá, {{ auth()->user()?->name }}!
-            </h2>
-            <p>Veja tudo sobre a sua conta Encanto.</p>
-            <div class="update-profile" alt="Atualizar perfil">
-            @include('profile.partials.update-profile-information-form', [
-                'user' => auth()->user()
-            ])
-            </div>  
-            <div class="delete-profile" alt="Deletar perfil">
-            @include('profile.partials.delete-user-form', [
-                'user' => auth()->user()
-            ])
+            <div class="profile-overview">
+                <div class="profile-info">
+                    <h2>
+                        Olá, {{ auth()->user()?->name }}!
+                    </h2>
+                    <p>Veja tudo sobre a sua conta Encanto.</p>
+                    <div class="update-profile" alt="Atualizar perfil">
+                        <i class="ph ph-pencil-simple-line"></i>
+                        <a href="{{ route('profile.edit') }}">Editar os seus dados</a>
+                    </div>  
+                </div>
+                <img class="profile-photo" src="{{ asset('assets/img/fotoperfil.svg') }}" alt="">
             </div>
         </main>
 </section>
