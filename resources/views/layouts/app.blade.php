@@ -1,36 +1,76 @@
+
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encanto Pet - Perfil</title>
+    <link rel="stylesheet" href="{{ asset('css/profile/usuario.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
 
-        <title>{{ config('app.name', 'Laravel') }}</title>
+</head>
+<body>
+    <header class="navbar">
+        <div class="nav-container">
 
-        <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+            <div class="logo">
+                <img src="../../../assets/img/logo.svg" alt="Encanto Pet">
+            </div>
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    </head>
-    <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
+            <nav class="menu">
+                <a href="#">Produtos</a>
+                <a href="#">Cachorros</a>
+                <a href="#">Gatos</a>
+                <a href="#">Promoções</a>
+                <a href="#">Adote aqui!</a>
+                <a href="#">Nosso contato</a>
+            </nav>
 
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {{ $header }}
-                    </div>
-                </header>
-            @endisset
+            <div class="nav-right">
+                <div class="search">
+                    <input type="text" placeholder="Pesquise produtos...">
+                    <span><img src="../../../assets/icon/lupa.svg" alt="Pesquisar"></span>
+                </div>
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+                <div class="icons">
+                    <a href="#" alt="Notificação"><i class="ph ph-bell"></i></a>
+                    <a href="#" alt="Login"><i class="ph ph-user"></i></a>
+                    <a href="#" alt="Internacionalização"><i class="ph ph-globe-hemisphere-west"></i></a>
+                </div>
+            </div>
         </div>
-    </body>
+    </header>
+    <section class="container">
+        <aside class="sidebar">
+            <div class="titulo">
+                <h1>Sua conta Encanto<i class="ph ph-bird"></i></h1>
+            </div>
+
+            <a href="#" alt="Sua conta" class="menu-item active"><i class="ph ph-user"></i>Minha conta</a>
+
+            <a href="#" alt="Notificações" class="menu-item"><i class="ph ph-bell-simple-ringing"></i>Notificações</a>
+
+            <a href="#" alt="Alterar senha" class="menu-item"><i class="ph ph-lock"></i>Alteração de senha</a>
+
+            <a href="#" alt="Seus pedidos" class="menu-item"><i class="ph ph-shopping-cart-simple"></i>Meus pedidos</a>
+
+            <a href="#" alt="Fale conosco" class="menu-item"><i class="ph ph-headset"></i>Fale conosco</a>
+
+            <a href="#" alt="Sair da conta" class="menu-item"><i class="ph ph-sign-out"></i>Sair</a>
+        </aside>
+
+        <main class="content">
+            {{ $slot }}
+        </main>
+        @if(request()->routeIs('dashboard') || request()->routeIs('profile.edit'))
+            <div class="dog-decoration">
+                <img 
+                    src="{{ asset('assets/img/fotoperfil.svg') }}" 
+                    alt="Dog"
+                >
+            </div>
+        @endif
+        
+</section>
+</body>
 </html>
