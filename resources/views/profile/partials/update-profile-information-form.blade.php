@@ -1,15 +1,15 @@
-<section class="edit-box">
-    
+<section class="form-container">
+
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}">
+    <form method="post" action="{{ route('profile.update') }}"class="form-body">
         @csrf
         @method('patch')
         <h3>Dados do Usuário</h3>
         <div class="input-group">
-            <label for="name" :value="__('Name')" >Nome</label>
+            <label for="name" :value="__('Name')">Nome</label>
             <x-text-input id="name" name="name" type="text" :value="old('name', $user->name)" required autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" />
         </div>
@@ -38,18 +38,17 @@
             @endif
         </div>
 
-        <div>
-            <button type="submit" class="save-btn">
+        <div class="form-actions">
+            <button type="submit" class="btn-submit">
                 Salvar alterações
             </button>
             <a href="{{ route('dashboard') }}" class="back-btn">Voltar</a>
             @if (session('status') === 'profile-updated')
-                <p
+                <p class="success-message"
                     x-data="{ show: true }"
                     x-show="show"
                     x-transition
                     x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
                 >{{ __('Salvo.') }}</p>
             @endif
         </div>

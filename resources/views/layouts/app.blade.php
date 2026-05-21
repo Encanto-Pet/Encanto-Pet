@@ -7,6 +7,7 @@
     <title>Encanto Pet - Perfil</title>
     <link rel="stylesheet" href="{{ asset('css/profile/usuario.css') }}">
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
 <body>
