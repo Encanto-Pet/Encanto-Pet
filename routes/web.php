@@ -6,13 +6,24 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\FavoriteController;
 
+use App\Models\Product;
+use App\Models\Order;
+use App\Models\Favorite;
+
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    $user=auth()->user();
+    $favoritesCount = $user->favorites()->count();
+    $ordersCount = $user->orders()->count();
+
+    return view('dashboard',[
+        'favoritesCount' => $favoritesCount,
+        'ordersCount' => $ordersCount,
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -26,6 +37,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/product/update/{product}', [ProductController::class, 'update']);
     Route::get('/product/delete/{product}', [ProductController::class, 'delete']);
     Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/{order}',[OrderController::class, 'show'])->name('orders.show');
+    Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
+
 });
 
 require __DIR__.'/auth.php';
