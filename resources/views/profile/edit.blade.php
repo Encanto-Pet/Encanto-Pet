@@ -1,5 +1,4 @@
 <x-app-layout>
-
     <div class="profile-edit">
         <div class="profile-header">
             <div>
@@ -17,5 +16,4 @@
             @include('profile.partials.delete-user-form')
         </div>
     </div>
-
 </x-app-layout>

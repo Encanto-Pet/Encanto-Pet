@@ -9,7 +9,7 @@ class FavoriteController extends Controller
 {
     public function index()
     {
-        $favorites = auth()->user()->favorites()->get();
+        $favorites = auth()->user()->favorites()->with('product')->get();
         return view('favorites.index', compact('favorites'));
     }
 }

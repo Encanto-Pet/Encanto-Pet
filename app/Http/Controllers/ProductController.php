@@ -12,7 +12,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return view('product.index', ['product' => Product::all()]);
+        return view('product.index', ['products' => Product::all()]);
     }
 
     /**
@@ -28,7 +28,19 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        Product::create($request->all());
+        $validated = $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+            'category' => 'required',
+            'image' => 'nullable|image',
+            'stock' => 'nullable|integer'
+        ]);
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+            $validated['image'] = $imagePath;
+        }
+        Product::create($validated);
         return redirect('/product');
     }
 
@@ -45,7 +57,20 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        $product->update($request->all());
+            $validated = $request->validate([
+                'name' => 'required',
+                'description' => 'required',
+                'price' => 'required',
+                'category' => 'required',
+                'image' => 'nullable|image',
+                'stock' => 'nullable|integer'
+        ]);
+
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('products', 'public');
+            $validated['image'] = $imagePath;
+        }
+        $product->update($validated);
         return redirect('/product');
     }
 

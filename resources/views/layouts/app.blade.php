@@ -48,28 +48,25 @@
                     <h1>Sua conta Encanto<i class="ph ph-bird"></i></h1>
                 </div>
 
-                <a href="#" alt="Sua conta" class="menu-item active"><i class="ph ph-user"></i>Minha conta</a>
+                <a href="{{ route('dashboard') }}" alt="Sua conta"  class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}"><i class="ph ph-user"></i>Minha conta</a>
 
-                <a href="#" alt="Notificações" class="menu-item"><i class="ph ph-bell-simple-ringing"></i>Notificações</a>
+                <a href="#" alt="Notificações"  class="menu-item {{ request()->routeIs('notifications') ? 'active' : '' }}"><i class="ph ph-bell-simple-ringing"></i>Notificações</a>
 
-                <a href="#" alt="Alterar senha" class="menu-item"><i class="ph ph-lock"></i>Alteração de senha</a>
+                <a href="{{ route('profile.edit') }}" alt="Alterar senha"  class="menu-item {{ request()->routeIs('profile.edit') ? 'active' : '' }}"><i class="ph ph-lock"></i>Alteração de senha</a>
 
-                <a href="#" alt="Seus pedidos" class="menu-item"><i class="ph ph-shopping-cart-simple"></i>Meus pedidos</a>
+                <a href="{{ route('orders.index') }}" alt="Seus pedidos"  class="menu-item {{ request()->routeIs('orders.index') ? 'active' : '' }}"><i class="ph ph-shopping-cart-simple"></i>Meus pedidos</a>
 
-                <a href="#" alt="Fale conosco" class="menu-item"><i class="ph ph-headset"></i>Fale conosco</a>
+                <a href="#" alt="Fale conosco"  class="menu-item {{ request()->routeIs('contact') ? 'active' : '' }}"><i class="ph ph-headset"></i>Fale conosco</a>
 
-                <a href="#" alt="Sair da conta" class="menu-item"><i class="ph ph-sign-out"></i>Sair</a>
+                <a href="#" alt="Sair da conta"  class="menu-item {{ request()->routeIs('logout') ? 'active' : '' }}"><i class="ph ph-sign-out"></i>Sair</a>
             </aside>
 
             <main class="content">
                 {{ $slot }}
             </main>
-            @if(request()->routeIs('dashboard') || request()->routeIs('profile.edit'))
+            @if(request()->routeIs('dashboard') || request()->routeIs('profile.edit') || request()->routeIs('orders.index') || request()->routeIs('favorites.index'))
                 <div class="dog-decoration">
-                    <img 
-                        src="{{ asset('assets/img/fotoperfil.svg') }}" 
-                        alt="Dog"
-                    >
+                    <img src="{{ asset('assets/img/fotoperfil.svg') }}" alt="Dog">
                 </div>
             @endif
             

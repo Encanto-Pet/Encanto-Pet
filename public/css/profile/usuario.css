@@ -154,8 +154,6 @@ body{
 }
 
 .profile-overview{
-    display: flex;
-    justify-content: space-between;
     width: 100%;
     padding: 80px;
 }
@@ -466,8 +464,218 @@ aside a{
     color: var(--cinza);
 }
 
-/* RESPONSIVIDADE */
 
+/* meus pedidos */
+
+.orders-overview{
+    width: 100%;
+    padding: 80px;
+    box-sizing:border-box;
+
+}
+
+.orders-table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0 20px;
+    overflow-x:auto;
+}
+
+.orders-table th{
+    text-align:left;
+    color: var(--cinza);
+    font-size:16px;
+    padding-bottom:10px;
+    font-weight: 400;
+}
+
+.orders-table td{
+    vertical-align:middle;
+    padding:15px 10px;
+}
+
+.product-image{
+    width:65px;
+    height:65px;
+    object-fit:cover;
+    border-radius:12px;
+    background: var(--cinzaclaro);
+    padding:8px;
+}
+
+.more-items{
+    display:block;
+    font-size:12px;
+    margin-top:5px;
+    color:var(--cinza);
+}
+
+.product-column{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+
+/* favoritos */
+.favorites-wrapper {
+    width: 100%;
+    padding: 80px;
+    box-sizing:border-box;
+}
+
+/* grid dos cards */
+.favorites-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+/* card */
+.favorite-item {
+    background: var(--branco);
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    transition: 0.25s ease;
+    border: 1px solid transparent;
+}
+
+.favorite-item:hover {
+    transform: translateY(-5px);
+    border-color: var(--amarelo);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+.favorite-item h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.favorite-item p {
+    font-size: 14px;
+    color: var(--cinza);
+    margin-bottom: 8px;
+}
+
+.favorite-item p:last-child {
+    font-weight: bold;
+    color: var(--amarelo);
+}
+
+/* vazio */
+.favorites-wrapper p {
+    color: var(--cinza);
+}
+
+
+/* SERVIÇOS */
+
+/* RESPONSIVIDADE */
+/* ========================= */
+/* TABLET */
+/* ========================= */
+
+@media (max-width: 1024px){
+
+    .orders-overview{
+        padding:50px;
+    }
+
+    .profile-info h2{
+        font-size:34px;
+    }
+
+    .dog-image img{
+        width:220px;
+    }
+
+    .orders-table thead th{
+        font-size:18px;
+    }
+}
+
+/* ========================= */
+/* MOBILE */
+/* ========================= */
+
+@media (max-width: 768px){
+
+    .orders-overview{
+        padding:30px 20px;
+    }
+
+    .orders-header{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .dog-image{
+        align-self:center;
+    }
+
+    .dog-image img{
+        width:180px;
+    }
+
+    .profile-info h2{
+        font-size:28px;
+    }
+
+    .profile-info p{
+        font-size:16px;
+    }
+
+    .orders-table{
+        display:block;
+        overflow-x:auto;
+        white-space:nowrap;
+    }
+
+    .orders-table thead th{
+        font-size:16px;
+    }
+
+    .orders-table td{
+        font-size:14px;
+    }
+
+    .product-image{
+        width:55px;
+        height:55px;
+    }
+}
+/* ========================= */
+/* MOBILE PEQUENO */
+/* ========================= */
+
+@media (max-width: 480px){
+
+    .orders-overview{
+        padding:20px 15px;
+    }
+
+    .profile-info h2{
+        font-size:24px;
+    }
+
+    .profile-info p{
+        font-size:14px;
+    }
+
+    .dog-image img{
+        width:150px;
+    }
+
+    .orders-table td{
+        padding:12px 8px;
+    }
+
+    .product-image{
+        width:48px;
+        height:48px;
+    }
+}
 @media (max-width:768px){
 
     .profile-header{
@@ -532,5 +740,16 @@ aside a{
 
     .logo img{
     width:55px;
+    }
+
+@media (max-width: 768px) {
+    .favorites-wrapper h2 {
+        text-align: center;
+        font-size: 24px;
+    }
+
+    .favorites-list {
+        grid-template-columns: 1fr;
+    }
     }
 }
