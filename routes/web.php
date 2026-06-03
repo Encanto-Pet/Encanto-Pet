@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\FavoriteController;
+use App\Http\Controllers\Admin\DashboardController;
 
 use App\Models\Product;
 use App\Models\Order;
@@ -31,7 +32,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/product', [ProductController::class, 'index']);
-    Route::get('/product/create', [ProductController::class, 'create']);
+    Route::get('/product/create', [ProductController::class, 'create'])
+      ->name('product.create');
     Route::post('/product/store', [ProductController::class, 'store']);
     Route::get('/product/edit/{product}', [ProductController::class, 'edit']);
     Route::post('/product/update/{product}', [ProductController::class, 'update']);
@@ -42,5 +44,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
 
 });
+
+Route::middleware(['auth', 'admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+
+        Route::get('/dashboard', function () {
+            return view('admin.dashboard');
+        })->name('dashboard');
+
+    });
+    Route::get('/admin/dashboard', [DashboardController::class, 'dashboard'])
+    ->middleware(['auth'])
+    ->name('admin.dashboard');
 
 require __DIR__.'/auth.php';

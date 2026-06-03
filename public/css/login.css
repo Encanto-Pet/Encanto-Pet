@@ -182,6 +182,33 @@ h1 {
   transform: translateX(-120px);
 }
 
+.custom-checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  gap: 8px;
+}
+
+/* Esconde o padrão */
+.custom-checkbox input {
+  display: none;
+}
+
+/* Caixa */
+.checkmark {
+  width: 16px;
+  height: 16px;
+  border-radius:4px;
+  background: #eee;
+}
+
+/* Quando marcado */
+.custom-checkbox input:checked + .checkmark {
+  background-image: url('../assets/icon/patinha.svg'); /* CAMINHO DA IMAGEM */
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 24px;
+}
 /* ===== RESPONSIVO ===== */
 
 @media (max-width: 900px) {

@@ -72,11 +72,11 @@
                 @endif
 
                 <!-- REMEMBER -->
-                <label class="check">
-                    <input type="checkbox" name="remember">
-                    Lembrar a senha
+                <label class="custom-checkbox">
+                <input type="checkbox">
+                <span class="checkmark"></span>
+                Lembrar a senha
                 </label>
-
                 <!-- BOTÃO -->
                 <x-primary-button class="btn">
                     Entrar
@@ -89,7 +89,7 @@
         <!-- DIREITA -->
         <section class="right">
             <img src="{{ asset('assets/img/cachorro login.svg') }}" alt="Cachorro feliz">
-            <img src="{{ asset('assets/img/logo.svg') }}" alt="Logo Encanto Pet" class="logo">
+            <a src="{{ asset('assets/img/logo.svg') }}" alt="Logo Encanto Pet" class="logo" href="{{ url('welcome.blade') }}"></a>
         </section>
 
     </main>

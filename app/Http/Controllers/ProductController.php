@@ -41,7 +41,13 @@ class ProductController extends Controller
             $validated['image'] = $imagePath;
         }
         Product::create($validated);
-        return redirect('/product');
+        $redirectTo = $request->input('redirect_to', '/product');
+
+        if (! str_starts_with($redirectTo, '/')) {
+            $redirectTo = '/product';
+        }
+
+        return redirect($redirectTo);
     }
 
     /**

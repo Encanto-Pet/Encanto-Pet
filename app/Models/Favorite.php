@@ -22,4 +22,8 @@ class Favorite extends Model
     {
         return $this->belongsTo(Product::class);
     }
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class);
+    }
 }
