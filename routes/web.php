@@ -13,8 +13,16 @@ use App\Models\Favorite;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('welcome', [
+        'products' => Product::latest()->get(),
+    ]);
 });
+
+Route::get('/checkout', function () {
+    return view('checkout', [
+        'products' => Product::latest()->take(4)->get(),
+    ]);
+})->name('checkout');
 
 Route::get('/dashboard', function () {
     $user=auth()->user();

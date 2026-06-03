@@ -27,28 +27,24 @@ class ProductController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'name' => 'required',
-            'description' => 'required',
-            'price' => 'required',
-            'category' => 'required',
-            'image' => 'nullable|image',
-            'stock' => 'nullable|integer'
-        ]);
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('products', 'public');
-            $validated['image'] = $imagePath;
-        }
-        Product::create($validated);
-        $redirectTo = $request->input('redirect_to', '/product');
+{
+    $data = $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'required|string',
+        'price' => 'required|numeric',
+        'category' => 'required|string|max:255',
+        'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
+    ]);
 
-        if (! str_starts_with($redirectTo, '/')) {
-            $redirectTo = '/product';
-        }
-
-        return redirect($redirectTo);
+    if ($request->hasFile('image')) {
+        $data['image'] = $request->file('image')->store('products', 'public');
     }
+
+    Product::create($data);
+
+    return redirect('/admin/dashboard?section=produtos')
+        ->with('success', 'Produto cadastrado com sucesso!');
+}
 
     /**
      * Show the form for editing the specified resource.

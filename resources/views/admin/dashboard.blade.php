@@ -664,7 +664,10 @@
     </div>
 
     <div class="admin-product-create">
-      <form class="admin-product-form" id="adminProductForm" action="/product/store" method="POST" enctype="multipart/form-data">
+      <form class="admin-product-form" id="adminProductForm"
+      action="/product/store"
+      method="POST"
+      enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="redirect_to" value="/admin/dashboard?section=produtos">
 
