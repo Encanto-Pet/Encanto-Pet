@@ -25,11 +25,11 @@ Route::get('/checkout', function () {
 })->name('checkout');
 
 Route::get('/dashboard', function () {
-    $user=auth()->user();
+    $user = auth()->user();
     $favoritesCount = $user->favorites()->count();
     $ordersCount = $user->orders()->count();
 
-    return view('dashboard',[
+    return view('dashboard', [
         'favoritesCount' => $favoritesCount,
         'ordersCount' => $ordersCount,
     ]);
@@ -41,14 +41,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/product', [ProductController::class, 'index']);
     Route::get('/product/create', [ProductController::class, 'create'])
-      ->name('product.create');
-    Route::post('/product/store', [ProductController::class, 'store']);
+        ->name('product.create');
+    Route::post('/product/store', [ProductController::class, 'store'])
+        ->name('product.store');
     Route::get('/product/edit/{product}', [ProductController::class, 'edit']);
-    Route::post('/product/update/{product}', [ProductController::class, 'update']);
-    Route::get('/product/delete/{product}', [ProductController::class, 'delete']);
+    Route::put('/product/update/{product}', [ProductController::class, 'update']);
+    Route::delete('/product/delete/{product}', [ProductController::class, 'destroy']);
     Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/{order}',[OrderController::class, 'show'])->name('orders.show');
+    Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
 
 });
@@ -63,8 +64,8 @@ Route::middleware(['auth', 'admin'])
         })->name('dashboard');
 
     });
-    Route::get('/admin/dashboard', [DashboardController::class, 'dashboard'])
+Route::get('/admin/dashboard', [DashboardController::class, 'dashboard'])
     ->middleware(['auth'])
     ->name('admin.dashboard');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

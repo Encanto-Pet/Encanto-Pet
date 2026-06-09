@@ -57,30 +57,44 @@ a {
 }
 
 .nav-container {
-    width: min(1180px, 100%);
+    width: min(1180px, calc(100% - 28px));
     min-height: 64px;
-    padding: 12px 25px;
+    padding: 12px 18px;
     border-radius: 15px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 22px;
+    gap: 18px;
     background: rgba(255, 255, 255, 0.97);
     box-shadow: 0 12px 12px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(12px);
 }
 
+.logo {
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+}
+
+.logo a {
+    display: flex;
+    align-items: center;
+}
+
 .logo img {
     display: block;
     width: 70px;
+    min-width: 70px;
     height: auto;
 }
 
 .menu {
+    flex: 1 1 auto;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: clamp(14px, 2.1vw, 30px);
+    gap: clamp(12px, 1.7vw, 24px);
+    min-width: 0;
 }
 
 .menu a {
@@ -96,9 +110,11 @@ a {
 }
 
 .nav-right {
+    flex: 0 1 auto;
     display: flex;
     align-items: center;
-    gap: clamp(18px, 4vw, 60px);
+    gap: 14px;
+    min-width: 0;
 }
 
 .search {
@@ -112,8 +128,8 @@ a {
 }
 
 .search input {
-    width: min(250px, 18vw);
-    min-width: 140px;
+    width: clamp(135px, 14vw, 210px);
+    min-width: 0;
     border: 0;
     background: transparent;
     outline: none;
@@ -129,6 +145,7 @@ a {
 }
 
 .home-auth-links {
+    flex: 0 0 auto;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -138,9 +155,9 @@ a {
 .home-auth-links a {
     min-height: 34px;
     border-radius: 999px;
-    padding: 8px 14px;
+    padding: 8px 12px;
     color: #333333;
-    font-size: 0.86rem;
+    font-size: 0.82rem;
     font-weight: 800;
     text-decoration: none;
     transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
@@ -162,9 +179,10 @@ a {
 }
 
 .icons {
+    flex: 0 0 auto;
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
     color: #67a6b0;
     font-size: 20px;
 }
@@ -1071,9 +1089,17 @@ footer ul {
     .menu {
         order: 3;
         width: 100%;
+        flex: 1 0 100%;
         justify-content: flex-start;
         overflow-x: auto;
         padding-bottom: 4px;
+    }
+
+    .nav-right {
+        margin-left: auto;
+        max-width: calc(100% - 92px);
+        flex-wrap: wrap;
+        justify-content: flex-end;
     }
 
     .hero,
@@ -1133,6 +1159,8 @@ footer ul {
 
     .nav-right {
         width: 100%;
+        max-width: none;
+        margin-left: 0;
         flex-wrap: wrap;
         gap: 14px;
     }

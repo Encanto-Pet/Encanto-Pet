@@ -20,32 +20,37 @@ class ProductController extends Controller
      */
     public function create()
     {
-        return view('product.create');
+        $products = Product::latest()->get();
+
+        return view('product.create', [
+            'products' => $products
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    $data = $request->validate([
-        'name' => 'required|string|max:255',
-        'description' => 'required|string',
-        'price' => 'required|numeric',
-        'category' => 'required|string|max:255',
-        'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048',
-    ]);
+    {
+        $data = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric',
+            'category' => 'required|string',
+            'image' => 'nullable|file|mimes:jpg,jpeg,png,webp,svg|max:5120',
+        ]);
 
-    if ($request->hasFile('image')) {
-        $data['image'] = $request->file('image')->store('products', 'public');
+        $data['stock'] = 0;
+        $data['is_active'] = 1;
+
+        if ($request->hasFile('image')) {
+            $data['image'] = $request->file('image')->store('products', 'public');
+        }
+
+        Product::create($data);
+
+        return redirect('/product/create')->with('success', 'Produto cadastrado com sucesso!');
     }
-
-    Product::create($data);
-
-    return redirect('/admin/dashboard?section=produtos')
-        ->with('success', 'Produto cadastrado com sucesso!');
-}
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -57,38 +62,50 @@ class ProductController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
-    {
-            $validated = $request->validate([
-                'name' => 'required',
-                'description' => 'required',
-                'price' => 'required',
-                'category' => 'required',
-                'image' => 'nullable|image',
-                'stock' => 'nullable|integer'
-        ]);
+  public function update(Request $request, Product $product)
+{
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'description' => 'required|string',
+        'price' => 'required|numeric',
+        'category' => 'required|string',
+        'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+        'stock' => 'nullable|integer'
+    ]);
 
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('products', 'public');
-            $validated['image'] = $imagePath;
+    $validated['stock'] = $validated['stock'] ?? 0;
+
+    if ($request->hasFile('image')) {
+        if ($product->image && \Storage::disk('public')->exists($product->image)) {
+            \Storage::disk('public')->delete($product->image);
         }
-        $product->update($validated);
-        return redirect('/product');
+
+        $validated['image'] = $request->file('image')->store('products', 'public');
     }
+
+    $product->update($validated);
+
+    return redirect('/product/create')->with('success', 'Produto atualizado com sucesso!');
+}
 
     /**
      * Remove the specified resource from storage.
      */
-    public function delete(Product $product)
-    {
-        $product->delete();
-        return redirect('/product');
+   public function destroy(Product $product)
+{
+    if ($product->image && \Storage::disk('public')->exists($product->image)) {
+        \Storage::disk('public')->delete($product->image);
     }
 
-    public function show($id)
-{
-    $product = Product::findOrFail($id);
-    return view('product.show', compact('product'));
+    $product->delete();
+
+    return redirect('/product/create')->with('success', 'Produto excluído com sucesso!');
 }
+
+    public function show($id)
+    {
+        $product = Product::findOrFail($id);
+        return view('product.show', compact('product'));
+    }
 
 }

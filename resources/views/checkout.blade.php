@@ -146,7 +146,7 @@
                 <button class="btn-checkout" type="button" onclick="finishCheckout()">Finalizar pagamento!</button>
             </aside>
 
-            <div class="checkout-pet-deco" aria-hidden="true">🐱</div>
+            <div class="checkout-pet-deco" aria-hidden="true"><img src="{{ asset('assets/img/gato-pagamento.svg') }}" alt=""></div>
             <div class="checkout-paw-deco" aria-hidden="true">🐾 🐾</div>
         </section>
 

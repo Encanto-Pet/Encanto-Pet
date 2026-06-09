@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    protected $fillable = [
+      protected $fillable = [
         'name',
         'description',
         'price',
         'category',
-        'image',
         'stock',
-        'is_active'
+        'image',
+        'is_active',
     ];
     public function favorites()
     {
