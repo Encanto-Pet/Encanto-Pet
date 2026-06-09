@@ -13,7 +13,7 @@
     <header class="navbar">
         <div class="nav-container">
             <div class="logo">
-                <img src="{{ asset('assets/img/logo.svg') }}" alt="Encanto Pet">
+               <a href="/"><img src="{{ asset('assets/img/logo.svg') }}" alt="Encanto Pet"></a> 
             </div>
 
             <nav class="menu">
@@ -26,39 +26,33 @@
             </nav>
 
             <div class="nav-right">
-                <div class="search">
-                    <input type="text" placeholder="Pesquise produtos...">
-                    <span><img src="{{ asset('assets/icon/lupa.svg') }}" alt="Pesquisar"></span>
-                </div>
+                <form class="search" role="search">
+                    <input type="search" name="search" placeholder="Pesquise produtos..." autocomplete="off">
+                    <button type="submit" aria-label="Pesquisar">
+                        <img src="{{ asset('assets/icon/lupa.svg') }}" alt="">
+                    </button>
+                </form>
 
-                @if (Route::has('login'))
+                @auth
                     <div class="home-auth-links">
-                        @auth
-                            <a href="{{ url('/dashboard') }}">Dashboard</a>
-                        @else
-                            <a href="{{ route('login') }}">Login</a>
-
-                            @if (Route::has('register'))
-                                <a class="register-link" href="{{ route('register') }}">Registre-se</a>
-                            @endif
-                        @endauth
+                        <a href="{{ auth()->user()->isAdmin() ? route('admin.dashboard') : route('dashboard') }}">Dashboard</a>
                     </div>
-                @endif
+                @endauth
 
                 <div class="icons">
                     <a href="#" aria-label="Notificação"><i class="ph ph-bell"></i></a>
                     @if (Route::has('login'))
                         @auth
-                            <a href="{{ url('/dashboard') }}" aria-label="Dashboard"><i class="ph ph-user"></i></a>
+                            <a href="{{ auth()->user()->isAdmin() ? route('admin.dashboard') : route('dashboard') }}" aria-label="Dashboard"><i class="ph ph-user"></i></a>
                         @else
                             <a href="{{ route('login') }}" aria-label="Login"><i class="ph ph-user"></i></a>
                         @endauth
                     @endif
                     <a href="#" aria-label="Internacionalização"><i class="ph ph-globe-hemisphere-west"></i></a>
-                    <button class="cart-icon" type="button" onclick="window.location.href='{{ route('checkout') }}'" aria-label="Carrinho">
+                    <a class="cart-icon" href="{{ route('checkout') }}" aria-label="Carrinho">
                         <i class="ph ph-shopping-cart-simple"></i>
                         <span id="cart-count">0</span>
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>
@@ -215,6 +209,11 @@
                             <span>Quando o admin cadastrar produtos, eles vão aparecer aqui automaticamente.</span>
                         </div>
                     @endforelse
+
+                    <div class="empty-products is-hidden" id="products-search-empty">
+                        <strong>Nenhum produto encontrado.</strong>
+                        <span>Tente buscar por outro nome ou categoria.</span>
+                    </div>
                 </div>
             </div>
         </section>

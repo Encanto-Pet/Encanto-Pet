@@ -71,28 +71,63 @@ window.addToCart = function addToCart(event, product) {
     window.showToast(`${normalizedProduct.name} adicionado ao carrinho!`);
 };
 
+let activeProductFilter = 'todos';
+let activeSearchTerm = '';
+
+function normalizeText(value) {
+    return String(value || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .trim();
+}
+
+function getProductSearchText(card) {
+    return normalizeText([
+        card.dataset.productName,
+        card.dataset.productDescription,
+        card.dataset.category,
+        card.textContent,
+    ].join(' '));
+}
+
+function applyProductFilters() {
+    const cards = document.querySelectorAll('.produto-card');
+    const term = normalizeText(activeSearchTerm);
+    let visibleCount = 0;
+
+    cards.forEach((card) => {
+        const category = card.dataset.category || 'outros';
+        const price = Number(card.dataset.price || 0);
+
+        const matchesCategory =
+            activeProductFilter === 'todos' ||
+            activeProductFilter === category ||
+            (activeProductFilter === 'ate-50' && price <= 50) ||
+            (activeProductFilter === 'ate-100' && price <= 100) ||
+            (activeProductFilter === 'acima-100' && price > 100);
+
+        const matchesSearch = !term || getProductSearchText(card).includes(term);
+        const shouldShow = matchesCategory && matchesSearch;
+
+        card.classList.toggle('is-hidden', !shouldShow);
+        if (shouldShow) visibleCount += 1;
+    });
+
+    const emptySearch = document.getElementById('products-search-empty');
+    if (emptySearch) {
+        emptySearch.classList.toggle('is-hidden', visibleCount > 0 || !term);
+    }
+}
+
 window.setFiltro = function setFiltro(button, filter) {
     document.querySelectorAll('.filter-option').forEach((item) => {
         item.classList.remove('active');
     });
 
     if (button) button.classList.add('active');
-
-    const cards = document.querySelectorAll('.produto-card');
-
-    cards.forEach((card) => {
-        const category = card.dataset.category || 'outros';
-        const price = Number(card.dataset.price || 0);
-
-        const shouldShow =
-            filter === 'todos' ||
-            filter === category ||
-            (filter === 'ate-50' && price <= 50) ||
-            (filter === 'ate-100' && price <= 100) ||
-            (filter === 'acima-100' && price > 100);
-
-        card.classList.toggle('is-hidden', !shouldShow);
-    });
+    activeProductFilter = filter;
+    applyProductFilters();
 };
 
 window.filterPets = function filterPets(filter) {
@@ -104,6 +139,51 @@ window.filterPets = function filterPets(filter) {
 
     window.setFiltro(matchingButton, filter);
 };
+
+function setupProductSearch() {
+    const forms = document.querySelectorAll('.search');
+
+    forms.forEach((form) => {
+        const input = form.querySelector('input[name="search"]');
+        if (!input) return;
+
+        form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const term = input.value.trim();
+
+            if (!document.getElementById('produtos-grid')) {
+                window.location.href = `/?search=${encodeURIComponent(term)}#produtos`;
+                return;
+            }
+
+            activeSearchTerm = term;
+            applyProductFilters();
+
+            const products = document.getElementById('produtos');
+            if (products) products.scrollIntoView({ behavior: 'smooth' });
+        });
+
+        input.addEventListener('input', () => {
+            if (!document.getElementById('produtos-grid')) return;
+            activeSearchTerm = input.value;
+            applyProductFilters();
+        });
+    });
+
+    const params = new URLSearchParams(window.location.search);
+    const initialSearch = params.get('search') || params.get('q') || '';
+
+    if (initialSearch && document.getElementById('produtos-grid')) {
+        activeSearchTerm = initialSearch;
+        document.querySelectorAll('.search input[name="search"]').forEach((input) => {
+            input.value = initialSearch;
+        });
+        applyProductFilters();
+
+        const products = document.getElementById('produtos');
+        if (products) products.scrollIntoView({ behavior: 'smooth' });
+    }
+}
 
 const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
@@ -166,5 +246,6 @@ window.finishCheckout = function finishCheckout() {
     window.showToast('Pagamento finalizado!');
 };
 
+setupProductSearch();
 updateCartCount();
 renderCheckoutCart();

@@ -450,7 +450,7 @@
 <div class="sidebar" id="sidebar">
   <div class="logo-area">
    
-        <img src="{{ asset('assets/img/logo.svg') }}" alt="logo">
+        <a href="/"><img src="{{ asset('assets/img/logo.svg') }}" alt="logo"></a>
   </div>
   <a class="nav-link active" id="nav-dashboard" onclick="showPage('dashboard')">
     <svg width="17" height="17" fill="none" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="2" fill="currentColor"/><rect x="14" y="3" width="7" height="7" rx="2" fill="currentColor"/><rect x="3" y="14" width="7" height="7" rx="2" fill="currentColor"/><rect x="14" y="14" width="7" height="7" rx="2" fill="currentColor"/></svg>
@@ -476,10 +476,7 @@
     <svg width="17" height="17" fill="none" viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     Fale conosco
   </a>
-  <a class="nav-link nav-sair" id="nav-checkout" onclick="showPage('checkout')">
-    <svg width="17" height="17" fill="none" viewBox="0 0 24 24"><path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    Ver Checkout
-  </a>
+
 </div>
 
 <!-- ADMIN MAIN -->

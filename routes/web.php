@@ -20,7 +20,7 @@ Route::get('/', function () {
 
 Route::get('/checkout', function () {
     return view('checkout', [
-        'products' => Product::latest()->take(4)->get(),
+        'products' => collect(),
     ]);
 })->name('checkout');
 
@@ -49,23 +49,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/product/delete/{product}', [ProductController::class, 'destroy']);
     Route::get('/product/{id}', [ProductController::class, 'show'])->name('product.show');
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
 
 });
 
-Route::middleware(['auth', 'admin'])
-    ->prefix('admin')
-    ->name('admin.')
-    ->group(function () {
-
-        Route::get('/dashboard', function () {
-            return view('admin.dashboard');
-        })->name('dashboard');
-
-    });
 Route::get('/admin/dashboard', [DashboardController::class, 'dashboard'])
-    ->middleware(['auth'])
+    ->middleware(['auth', 'admin'])
     ->name('admin.dashboard');
 
 require __DIR__ . '/auth.php';

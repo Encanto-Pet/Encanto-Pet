@@ -16,7 +16,7 @@
             <div class="nav-container">
 
                 <div class="logo">
-                    <img src="{{ asset('assets/img/logo.svg') }}" alt="Encanto Pet">
+                    <a href="/"><img src="{{ asset('assets/img/logo.svg') }}" alt="Encanto Pet"></a>
                 </div>
 
                 <nav class="menu">
@@ -29,10 +29,12 @@
                 </nav>
 
                 <div class="nav-right">
-                    <div class="search">
-                        <input type="text" placeholder="Pesquise produtos...">
-                        <span><img src="../../../assets/icon/lupa.svg" alt="Pesquisar"></span>
-                    </div>
+                    <form class="search" role="search">
+                        <input type="search" name="search" placeholder="Pesquise produtos..." autocomplete="off">
+                        <button type="submit" aria-label="Pesquisar">
+                            <img src="{{ asset('assets/icon/lupa.svg') }}" alt="">
+                        </button>
+                    </form>
 
                     <div class="icons">
                         <a href="#" alt="Notificação"><i class="ph ph-bell"></i></a>
