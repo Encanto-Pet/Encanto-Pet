@@ -37,7 +37,7 @@ Route::get('/dashboard', function () {
         'favoritesCount' => $favoritesCount,
         'ordersCount' => $ordersCount,
     ]);
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::post('/pix/gerar', [PixController::class, 'gerar'])->name('pix.gerar');
