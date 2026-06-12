@@ -4,7 +4,7 @@
             <h2 data-i18n="orders.greeting" data-i18n-name="{{ auth()->user()?->name }}">Olá, {{ auth()->user()?->name }}! <br> Um remember nas suas compras?</h2>
             <p data-i18n="orders.subtitle">Aqui você consegue visualizar todas os seus pedidos!</p>
         </div>
-        @if($orders->isEmpty())
+        @if($orders->count() === 0)
             <div class="orders-empty">
                 <i class="ph ph-shopping-cart-simple"></i>
                 <h3 data-i18n="orders.none">Nenhum pedido encontrado</h3>
@@ -52,14 +52,17 @@
                             R${{ number_format($order->total, 2, ',', '.') }}
                         </td>
                         <td>
-                            <span class="order-status {{ $order->status }}">
-                                {{ ucfirst($order->status) }}
+                            <span class="order-status {{ $order->status_class }}">
+                                {{ $order->status_label }}
                             </span>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
+        <div style="margin-top: 24px">
+            {{ $orders->links() }}
+        </div>
         @endif
     </div>
 </x-app-layout>

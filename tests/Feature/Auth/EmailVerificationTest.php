@@ -5,12 +5,12 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 
-test('email verification screen can be rendered', function () {
+test('email verification screen redirects to otp flow for unverified users', function () {
     $user = User::factory()->unverified()->create();
 
     $response = $this->actingAs($user)->get('/verify-email');
 
-    $response->assertStatus(200);
+    $response->assertRedirect(route('otp.show', absolute: false));
 });
 
 test('email can be verified', function () {

@@ -11,7 +11,11 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = auth()->user()->orders()->with('items.product')->get();
+        $orders = auth()->user()->orders()
+            ->with('items.product')
+            ->latest()
+            ->paginate(10);
+
         return view('orders.index', compact('orders'));
     }
 
@@ -33,12 +37,30 @@ class OrderController extends Controller
             ->groupBy('id')
             ->map(fn ($items) => $items->sum(fn ($item) => max((int) ($item['quantity'] ?? 1), 1)));
 
-        $products = Product::whereIn('id', $quantities->keys())->get()->keyBy('id');
-        $total = $quantities->reduce(function ($sum, $quantity, $productId) use ($products) {
-            return $sum + ((float) $products[$productId]->price * $quantity);
-        }, 0);
+        $order = DB::transaction(function () use ($quantities) {
+            $products = Product::whereIn('id', $quantities->keys())
+                ->lockForUpdate()
+                ->get()
+                ->keyBy('id');
 
-        $order = DB::transaction(function () use ($products, $quantities, $total) {
+            if ($products->count() !== $quantities->count() || $products->contains(fn ($product) => ! $product->is_active)) {
+                abort(response()->json([
+                    'message' => 'Um ou mais produtos selecionados nao estao disponiveis.',
+                ], 422));
+            }
+
+            foreach ($quantities as $productId => $quantity) {
+                if ((int) $products[$productId]->stock < $quantity) {
+                    abort(response()->json([
+                        'message' => 'Estoque insuficiente para um ou mais produtos selecionados.',
+                    ], 422));
+                }
+            }
+
+            $total = $quantities->reduce(function ($sum, $quantity, $productId) use ($products) {
+                return $sum + ((float) $products[$productId]->price * $quantity);
+            }, 0);
+
             $order = Order::create([
                 'user_id' => auth()->id(),
                 'total' => $total,
@@ -53,6 +75,8 @@ class OrderController extends Controller
                     'quantity' => $quantity,
                     'price' => $product->price,
                 ]);
+
+                $product->decrement('stock', $quantity);
             });
 
             return $order;
@@ -66,6 +90,10 @@ class OrderController extends Controller
 
     public function show(Order $order)
     {
-        return view('orders.show', compact('orders'));
+        abort_unless($order->user_id === auth()->id() || auth()->user()->isAdmin(), 403);
+
+        $order->load('items.product');
+
+        return view('orders.show', compact('order'));
     }
 }

@@ -810,6 +810,7 @@ aside a{
 }
 
 .order-status.pendente    { background: var(--amareloclaro); color: var(--amarelo); }
+.order-status.em-preparo  { background: var(--amareloclaro); color: var(--amarelo); }
 .order-status.processando { background: #dbeafe; color: #1d4ed8; }
 .order-status.enviado     { background: #dcfce7; color: #16a34a; }
 .order-status.entregue    { background: #dcfce7; color: #16a34a; }

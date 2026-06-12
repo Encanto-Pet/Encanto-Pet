@@ -603,8 +603,15 @@
 
         function updateCartCount() {
             const c = document.getElementById('cart-count');
-            if (c) c.textContent = readCart().length;
+            if (c) c.textContent = readCart().reduce((sum, item) => sum + Number(item.quantity || 1), 0);
         }
+
+        window.removeFromCheckoutCart = function (productId) {
+            writeCart(readCart().filter((item) => String(item.id) !== String(productId)));
+            updateCartCount();
+            renderCart();
+            window.showToast?.('Produto removido do carrinho.');
+        };
 
         function renderCart() {
             if (!checkoutItems || !subtotalEl || !totalEl) return;
@@ -629,11 +636,14 @@
                     <div class="order-item-text">
                         <div class="order-item-name">${escHtml(item.name)}</div>
                         <div class="order-item-desc">${escHtml(item.description || _t('checkout.product_default'))}</div>
-                        <div class="order-item-price">${formatCurrency(item.price)}</div>
+                        <div class="order-item-price">${Number(item.quantity || 1)}x ${formatCurrency(item.price)}</div>
                     </div>
+                    <button class="cart-remove-btn" type="button" onclick="removeFromCheckoutCart(${Number(item.id)})" aria-label="Remover ${escHtml(item.name)}">
+                        <i class="ph ph-trash"></i>
+                    </button>
                 </div>`).join('');
 
-            const subtotal = cart.reduce((s, i) => s + Number(i.price || 0), 0);
+            const subtotal = cart.reduce((s, i) => s + (Number(i.price || 0) * Number(i.quantity || 1)), 0);
             subtotalEl.textContent = formatCurrency(subtotal);
             totalEl.textContent    = formatCurrency(subtotal);
         }

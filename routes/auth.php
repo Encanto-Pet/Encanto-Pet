@@ -76,7 +76,7 @@ Route::middleware('auth')->group(function () {
     // ── Admin ───────────────────────────────────────────────────────────────
     Route::middleware(['admin'])->group(function () {
         Route::get('/admin', function () {
-            return view('admin.dashboard');
+            return redirect()->route('admin.dashboard');
         });
 
         Route::resource('products', ProductController::class);

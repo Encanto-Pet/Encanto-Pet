@@ -112,7 +112,7 @@
                     <span class="pet-icon lilac">🐰</span>
                     <span data-i18n="home.all">Todos</span>
                 </button>
-                <button class="pet-card" type="button" onclick="filterPets('brinquedo')">
+                <button class="pet-card" type="button" onclick="filterPets('brinquedos')">
                     <span class="pet-icon pink">🎾</span>
                     <span data-i18n="home.toys">Brinquedos</span>
                 </button>
@@ -149,16 +149,18 @@
         <section class="shop-section" id="produtos">
             <aside class="shop-filters">
                 <h3 data-i18n="home.filter_category">Filtrar por categoria</h3>
-                <button class="filter-option active" type="button" onclick="setFiltro(this, 'todos')" data-i18n="home.all">Todos</button>
-                <button class="filter-option" type="button" onclick="setFiltro(this, 'racao')"     data-i18n="home.feed">Ração</button>
-                <button class="filter-option" type="button" onclick="setFiltro(this, 'petisco')"   data-i18n="home.treats">Petiscos</button>
-                <button class="filter-option" type="button" onclick="setFiltro(this, 'brinquedo')" data-i18n="home.toys">Brinquedos</button>
-                <button class="filter-option" type="button" onclick="setFiltro(this, 'higiene')"   data-i18n="home.hygiene">Higiene</button>
+                <button class="filter-option active" type="button" data-filter-type="category" onclick="setFiltro(this, 'todos', 'category')">Todos</button>
+                <button class="filter-option" type="button" data-filter-type="category" onclick="setFiltro(this, 'racao', 'category')">Ração</button>
+                <button class="filter-option" type="button" data-filter-type="category" onclick="setFiltro(this, 'petisco', 'category')">Petisco</button>
+                <button class="filter-option" type="button" data-filter-type="category" onclick="setFiltro(this, 'brinquedos', 'category')">Brinquedos</button>
+                <button class="filter-option" type="button" data-filter-type="category" onclick="setFiltro(this, 'higiene', 'category')">Higiene</button>
+                <button class="filter-option" type="button" data-filter-type="category" onclick="setFiltro(this, 'outros', 'category')">Outros</button>
 
                 <h3 data-i18n="home.filter_price">Filtrar por preço</h3>
-                <button class="filter-option" type="button" onclick="setFiltro(this, 'ate-50')"    data-i18n="home.up_to_50">Até R$ 50</button>
-                <button class="filter-option" type="button" onclick="setFiltro(this, 'ate-100')"   data-i18n="home.up_to_100">Até R$ 100</button>
-                <button class="filter-option" type="button" onclick="setFiltro(this, 'acima-100')" data-i18n="home.above_100">Acima de R$ 100</button>
+                <button class="filter-option active" type="button" data-filter-type="price" onclick="setFiltro(this, 'todos', 'price')">Todos os preços</button>
+                <button class="filter-option" type="button" data-filter-type="price" onclick="setFiltro(this, 'ate-50', 'price')" data-i18n="home.up_to_50">Até R$ 50</button>
+                <button class="filter-option" type="button" data-filter-type="price" onclick="setFiltro(this, 'ate-100', 'price')" data-i18n="home.up_to_100">Até R$ 100</button>
+                <button class="filter-option" type="button" data-filter-type="price" onclick="setFiltro(this, 'acima-100', 'price')" data-i18n="home.above_100">Acima de R$ 100</button>
             </aside>
 
             <div class="shop-content">
@@ -177,28 +179,28 @@
                 <div class="produtos-grid" id="produtos-grid">
                     @forelse($products as $product)
                         @php
-                            $category = strtolower($product->category ?? 'produto');
+                            $category = $product->category;
                             $price = (float) $product->price;
-                            $filterCategory = str_contains($category, 'ração') || str_contains($category, 'racao')
-                                ? 'racao'
-                                : (str_contains($category, 'petisco')
-                                    ? 'petisco'
-                                    : (str_contains($category, 'brinquedo')
-                                        ? 'brinquedo'
-                                        : (str_contains($category, 'higiene') || str_contains($category, 'banho') ? 'higiene' : 'outros')));
+                            $filterCategory = array_key_exists($category, \App\Models\Product::categoryOptions())
+                                ? $category
+                                : 'outros';
                         @endphp
 
                         <article
-                            class="produto-card fade-in"
+                            class="produto-card fade-in {{ $product->is_active ? '' : 'is-unavailable' }}"
                             data-category="{{ $filterCategory }}"
                             data-price="{{ $price }}"
                             data-product-id="{{ $product->id }}"
                             data-product-name="{{ $product->name }}"
                             data-product-description="{{ $product->description }}"
                             data-product-image="{{ $product->image ? asset('storage/' . $product->image) : asset('assets/img/cachorro-feliz.svg') }}"
+                            data-active="{{ $product->is_active ? '1' : '0' }}"
                         >
                             <a href="{{ route('product.show', $product->id) }}" class="product-link">
                                 <div class="produto-img">
+                                    @unless($product->is_active)
+                                        <span class="unavailable-badge">Indisponível</span>
+                                    @endunless
                                     @if($product->image)
                                         <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
                                     @else
@@ -218,8 +220,11 @@
                                                 name: @js($product->name),
                                                 description: @js($product->description),
                                                 price: {{ $price }},
-                                                image: @js($product->image ? asset('storage/' . $product->image) : asset('assets/img/cachorro-feliz.svg'))
+                                                image: @js($product->image ? asset('storage/' . $product->image) : asset('assets/img/cachorro-feliz.svg')),
+                                                is_active: @js((bool) $product->is_active)
                                             })"
+                                            @disabled(! $product->is_active)
+                                            aria-label="{{ $product->is_active ? 'Adicionar ao carrinho' : 'Produto indisponível' }}"
                                         >+</button>
                                     </div>
                                 </div>

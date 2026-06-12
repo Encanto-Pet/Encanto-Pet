@@ -10,7 +10,7 @@ it('creates an order from checkout cart items', function () {
         'name' => 'Racao Golden',
         'description' => 'Pacote 10kg',
         'price' => 150,
-        'category' => 'Racao',
+        'category' => 'racao',
         'stock' => 8,
         'is_active' => true,
     ]);
@@ -42,4 +42,6 @@ it('creates an order from checkout cart items', function () {
         ->product_id->toBe($product->id)
         ->quantity->toBe(2)
         ->price->toEqual(150.00);
+
+    expect($product->fresh()->stock)->toBe(6);
 });

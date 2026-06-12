@@ -46,12 +46,22 @@
 
         <label class="admin-field">
           <span>Preço</span>
-          <input type="number" name="price" id="adminProductPrice" step="0.01" required>
+          <input type="number" name="price" id="adminProductPrice" step="0.01" min="0.01" required>
+        </label>
+
+        <label class="admin-field">
+          <span>Estoque</span>
+          <input type="number" name="stock" min="0" step="1" value="{{ old('stock', 0) }}" required>
         </label>
 
         <label class="admin-field">
           <span>Categoria</span>
-          <input type="text" name="category" id="adminProductCategory" required>
+          <select name="category" id="adminProductCategory" required>
+            <option value="" disabled @selected(! old('category'))>Selecione uma categoria</option>
+            @foreach($categoryOptions as $value => $label)
+              <option value="{{ $value }}" @selected(old('category') === $value)>{{ $label }}</option>
+            @endforeach
+          </select>
         </label>
 
         <label class="admin-field admin-field-file" for="adminProductImage">
@@ -77,7 +87,7 @@
           <strong id="adminPreviewPrice">R$149,00</strong>
           <div class="admin-preview-stars">★★★★☆ <span>(131)</span></div>
           <small>Categoria:</small>
-          <p id="adminPreviewCategory">Ração de Cachorro</p>
+          <p id="adminPreviewCategory">Ração</p>
         </div>
       </aside>
     </div>
@@ -105,14 +115,23 @@
           <div class="product-name">{{ $product->name }}</div>
           <div class="product-price">R$ {{ number_format($product->price, 2, ',', '.') }}</div>
           <div class="product-stars">★★★★☆ <span>(131)</span></div>
-          <div class="product-cat"><b>Categoria:</b> {{ $product->category }}</div>
+          <div class="product-cat"><b>Categoria:</b> {{ $product->category_label }}</div>
           <div class="product-actions">
             <a class="prod-btn" href="/product/edit/{{ $product->id }}" title="Editar">✏️</a>
-            <a class="prod-btn" href="/product/delete/{{ $product->id }}" title="Remover">❌</a>
+            <form method="POST" action="/product/delete/{{ $product->id }}" style="display:inline">
+              @csrf
+              @method('DELETE')
+              <button class="prod-btn" type="submit" title="Arquivar">📦</button>
+            </form>
           </div>
         </div>
       @empty
         <div class="empty-products">Nenhum produto cadastrado ainda.</div>
       @endforelse
     </div>
+    @if(method_exists($products, 'links'))
+      <div style="margin-top:24px">
+        {{ $products->links() }}
+      </div>
+    @endif
   </div>

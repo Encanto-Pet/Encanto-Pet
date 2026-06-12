@@ -38,7 +38,9 @@ function escapeHtml(value) {
 
 function updateCartCount() {
     const counter = document.getElementById('cart-count');
-    if (counter) counter.textContent = readCart().length;
+    if (counter) {
+        counter.textContent = readCart().reduce((sum, item) => sum + Number(item.quantity || 1), 0);
+    }
 }
 
 window.showToast = function showToast(message) {
@@ -60,18 +62,40 @@ window.addToCart = function addToCart(event, product) {
     event.stopPropagation();
 
     const normalizedProduct = typeof product === 'string'
-        ? { id: Date.now(), name: product, description: '', price: 0, image: '' }
+        ? { id: Date.now(), name: product, description: '', price: 0, image: '', is_active: true }
         : product;
 
+    if (normalizedProduct.is_active === false) {
+        window.showToast('Produto indisponível no momento.');
+        return;
+    }
+
     const cart = readCart();
-    cart.push(normalizedProduct);
+    const existing = cart.find((item) => String(item.id) === String(normalizedProduct.id));
+
+    if (existing) {
+        existing.quantity = Number(existing.quantity || 1) + 1;
+    } else {
+        cart.push({ ...normalizedProduct, quantity: Number(normalizedProduct.quantity || 1) });
+    }
+
     writeCart(cart);
     updateCartCount();
+    renderCheckoutCart();
 
     window.showToast(`${normalizedProduct.name} adicionado ao carrinho!`);
 };
 
+window.removeFromCart = function removeFromCart(productId) {
+    const cart = readCart().filter((item) => String(item.id) !== String(productId));
+    writeCart(cart);
+    updateCartCount();
+    renderCheckoutCart();
+    window.showToast('Produto removido do carrinho.');
+};
+
 let activeProductFilter = 'todos';
+let activePriceFilter = 'todos';
 let activeSearchTerm = '';
 
 function normalizeText(value) {
@@ -102,13 +126,16 @@ function applyProductFilters() {
 
         const matchesCategory =
             activeProductFilter === 'todos' ||
-            activeProductFilter === category ||
-            (activeProductFilter === 'ate-50' && price <= 50) ||
-            (activeProductFilter === 'ate-100' && price <= 100) ||
-            (activeProductFilter === 'acima-100' && price > 100);
+            activeProductFilter === category;
+
+        const matchesPrice =
+            activePriceFilter === 'todos' ||
+            (activePriceFilter === 'ate-50' && price <= 50) ||
+            (activePriceFilter === 'ate-100' && price <= 100) ||
+            (activePriceFilter === 'acima-100' && price > 100);
 
         const matchesSearch = !term || getProductSearchText(card).includes(term);
-        const shouldShow = matchesCategory && matchesSearch;
+        const shouldShow = matchesCategory && matchesPrice && matchesSearch;
 
         card.classList.toggle('is-hidden', !shouldShow);
         if (shouldShow) visibleCount += 1;
@@ -116,17 +143,29 @@ function applyProductFilters() {
 
     const emptySearch = document.getElementById('products-search-empty');
     if (emptySearch) {
-        emptySearch.classList.toggle('is-hidden', visibleCount > 0 || !term);
+        const hasActiveFilter = Boolean(term)
+            || activeProductFilter !== 'todos'
+            || activePriceFilter !== 'todos';
+
+        emptySearch.classList.toggle('is-hidden', visibleCount > 0 || !hasActiveFilter);
     }
 }
 
-window.setFiltro = function setFiltro(button, filter) {
-    document.querySelectorAll('.filter-option').forEach((item) => {
+window.setFiltro = function setFiltro(button, filter, type = 'category') {
+    const filterType = type || button?.dataset.filterType || 'category';
+
+    document.querySelectorAll(`.filter-option[data-filter-type="${filterType}"]`).forEach((item) => {
         item.classList.remove('active');
     });
 
     if (button) button.classList.add('active');
-    activeProductFilter = filter;
+
+    if (filterType === 'price') {
+        activePriceFilter = filter;
+    } else {
+        activeProductFilter = filter === 'brinquedo' ? 'brinquedos' : filter;
+    }
+
     applyProductFilters();
 };
 
@@ -134,10 +173,11 @@ window.filterPets = function filterPets(filter) {
     const products = document.getElementById('produtos');
     if (products) products.scrollIntoView({ behavior: 'smooth' });
 
-    const matchingButton = Array.from(document.querySelectorAll('.filter-option'))
-        .find((button) => button.getAttribute('onclick')?.includes(`'${filter}'`));
+    const normalizedFilter = filter === 'brinquedo' ? 'brinquedos' : filter;
+    const matchingButton = Array.from(document.querySelectorAll('.filter-option[data-filter-type="category"]'))
+        .find((button) => button.getAttribute('onclick')?.includes(`'${normalizedFilter}'`));
 
-    window.setFiltro(matchingButton, filter);
+    window.setFiltro(matchingButton, normalizedFilter, 'category');
 };
 
 function setupProductSearch() {
@@ -205,6 +245,13 @@ function renderCheckoutCart() {
     const cart = readCart();
 
     if (!cart.length) {
+        checkoutItems.innerHTML = `
+            <div class="checkout-empty">
+                <strong>Seu carrinho está vazio.</strong>
+                <span>Adicione produtos para continuar a compra.</span>
+                <a href="/#produtos">Escolher produtos</a>
+            </div>
+        `;
         subtotalElement.textContent = subtotalElement.dataset.fallback || 'R$ 0,00';
         totalElement.textContent = totalElement.dataset.fallback || 'R$ 0,00';
         return;
@@ -218,12 +265,15 @@ function renderCheckoutCart() {
             <div class="order-item-text">
                 <div class="order-item-name">${escapeHtml(item.name)}</div>
                 <div class="order-item-desc">${escapeHtml(item.description || 'Produto Encanto Pet')}</div>
-                <div class="order-item-price">${formatCurrency(item.price)}</div>
+                <div class="order-item-price">${Number(item.quantity || 1)}x ${formatCurrency(item.price)}</div>
             </div>
+            <button class="cart-remove-btn" type="button" onclick="removeFromCart(${Number(item.id)})" aria-label="Remover ${escapeHtml(item.name)}">
+                <i class="ph ph-trash"></i>
+            </button>
         </div>
     `).join('');
 
-    const subtotal = cart.reduce((sum, item) => sum + Number(item.price || 0), 0);
+    const subtotal = cart.reduce((sum, item) => sum + (Number(item.price || 0) * Number(item.quantity || 1)), 0);
     subtotalElement.textContent = formatCurrency(subtotal);
     totalElement.textContent = formatCurrency(subtotal);
 }

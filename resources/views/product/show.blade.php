@@ -561,7 +561,12 @@
 
         <label class="admin-field">
           <span>Categoria</span>
-          <input type="text" name="category" id="adminProductCategory" required>
+          <select name="category" id="adminProductCategory" required>
+            <option value="" disabled @selected(! old('category'))>Selecione uma categoria</option>
+            @foreach($categoryOptions as $value => $label)
+              <option value="{{ $value }}" @selected(old('category') === $value)>{{ $label }}</option>
+            @endforeach
+          </select>
         </label>
 
         <label class="admin-field admin-field-file" for="adminProductImage">
@@ -587,7 +592,7 @@
           <strong id="adminPreviewPrice">R$149,00</strong>
           <div class="admin-preview-stars">★★★★☆ <span>(131)</span></div>
           <small>Categoria:</small>
-          <p id="adminPreviewCategory">Ração de Cachorro</p>
+          <p id="adminPreviewCategory">Ração</p>
         </div>
       </aside>
     </div>
@@ -615,7 +620,7 @@
           <div class="product-name">{{ $product->name }}</div>
           <div class="product-price">R$ {{ number_format($product->price, 2, ',', '.') }}</div>
           <div class="product-stars">★★★★☆ <span>(131)</span></div>
-          <div class="product-cat"><b>Categoria:</b> {{ $product->category }}</div>
+          <div class="product-cat"><b>Categoria:</b> {{ $product->category_label }}</div>
           <div class="product-actions">
             <a class="prod-btn" href="/product/edit/{{ $product->id }}" title="Editar">✏️</a>
             <a class="prod-btn" href="/product/delete/{{ $product->id }}" title="Remover">❌</a>
@@ -657,7 +662,7 @@
   function updatePreview() {
     previewName.textContent = nameInput.value || 'Ração Fórmula Salmão - 10kg';
     previewPrice.textContent = formatPrice(priceInput.value);
-    previewCategory.textContent = categoryInput.value || 'Ração de Cachorro';
+    previewCategory.textContent = categoryInput.selectedOptions[0]?.text || 'Ração';
   }
 
   [nameInput, priceInput, categoryInput].forEach((field) => {
