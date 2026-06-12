@@ -5,13 +5,13 @@ box-sizing:border-box;
 }
 
 body{
-font-family:'Baloo 2', sans-serif;
-background-image: url(../../../assets/img/background-confirmação-email\ \(1\).svg);
-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-position:relative;
+    font-family:'Baloo 2', sans-serif;
+    background-image: url('/assets/img/background-confirmação-email (1).svg');
+    height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:relative;
 }
 
 .logo{

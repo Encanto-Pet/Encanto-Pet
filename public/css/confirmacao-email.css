@@ -4,63 +4,79 @@
     box-sizing:border-box;
 }
 
+/* override app.css body */
 body{
-    font-family:'Baloo 2', 'Figtree', sans-serif;
+    font-family:'Baloo 2', sans-serif;
     background-image: url('/assets/img/background-confirmação-email (1).svg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    min-height: 100vh;
+    height:100vh;
     display:flex;
     align-items:center;
     justify-content:center;
     position:relative;
 }
 
+/* override app.css .logo (flex + 70px) */
 .logo{
-    position:fixed;
-    top:32px;
+    position:absolute;
+    top:40px;
     right:40px;
     width:100px;
-    z-index:10;
+    display:block;
+    flex:none;
 }
 
-.otp-container{
+.logo img{
+    display:block;
+    width:100px;
+    height:auto;
+}
+
+.container{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
     text-align:center;
-    padding: 24px 16px;
-    max-width: 520px;
-    width: 100%;
+    width:100%;
+    margin-top:300px;
 }
 
 h1{
-    font-size:36px;
+    font-size:58px;
     font-weight:700;
-    margin-bottom:16px;
-    line-height:1.25;
-    color:#222;
-}
-
-.dog{
-    width:300px;
-    margin-bottom:20px;
+    line-height:1.15;
+    margin-bottom:0;
 }
 
 .email-info{
     font-size:14px;
     color:#555;
-    margin-bottom:20px;
+    margin-top:10px;
 }
 
-/* ── Alertas ── */
+.dog{
+    width:632px;
+    max-width:90vw;
+    height:auto;
+    aspect-ratio:632/326;
+    object-fit:contain;
+    margin-top:20px;
+}
+
+/* ── alertas (acima dos inputs, quando há erros) ── */
 .alert{
     display:flex;
     align-items:center;
     gap:8px;
-    border-radius:8px;
+    border-radius:10px;
     padding:10px 16px;
     font-size:14px;
-    margin-bottom:16px;
+    margin-top:16px;
     font-weight:500;
+    width:100%;
+    max-width:480px;
 }
 
 .alert-success{
@@ -75,44 +91,38 @@ h1{
     border:1px solid #fca5a5;
 }
 
-/* ── Inputs OTP ── */
+/* ── inputs ── */
 .codigo{
     display:flex;
-    gap:12px;
+    gap:15px;
     justify-content:center;
-    margin-bottom:24px;
-    transition: opacity .3s;
+    margin-top:24px;
+    margin-bottom:0;
 }
 
+.codigo input,
 .otp-input{
-    width:58px;
-    height:58px;
+    width:60px;
+    height:60px;
     border-radius:10px;
     border:3px solid #c8d3df;
     text-align:center;
-    font-size:24px;
-    font-weight:700;
+    font-size:22px;
     outline:none;
-    transition: border-color .15s, transform .1s;
-    font-family: inherit;
-    color:#222;
+    font-family:inherit;
 }
 
+.codigo input:focus,
 .otp-input:focus{
     border-color:#f2c94c;
-    transform: scale(1.05);
 }
 
-.otp-input:not(:placeholder-shown){
-    border-color:#a3b4c6;
-}
-
-/* ── Estado de carregamento ── */
+/* ── loading ── */
 .loading-state{
     flex-direction:column;
     align-items:center;
     gap:10px;
-    margin-bottom:20px;
+    margin-top:16px;
     color:#555;
     font-size:14px;
 }
@@ -123,55 +133,50 @@ h1{
     border:3px solid #e5e7eb;
     border-top-color:#f2c94c;
     border-radius:50%;
-    animation: spin .7s linear infinite;
+    animation:spin .7s linear infinite;
 }
 
 @keyframes spin{
-    to{ transform: rotate(360deg); }
+    to{ transform:rotate(360deg); }
 }
 
-/* ── Reenvio ── */
+/* ── reenvio ── */
 .reenviar{
     color:#555;
     font-size:15px;
-    margin-top:4px;
+    margin-top:32px;
 }
 
-.resend-btn{
-    background:none;
-    border:none;
+.reenviar a,
+.reenviar-btn{
     color:#e0a800;
     font-weight:600;
+    text-decoration:none;
+    background:none;
+    border:none;
     font-size:15px;
     cursor:pointer;
     font-family:inherit;
     padding:0;
-    text-decoration:none;
-    transition: color .15s;
 }
 
-.resend-btn:hover:not(:disabled){
-    color:#c68f00;
-    text-decoration:underline;
-}
-
-.resend-btn:disabled{
+.reenviar-btn:disabled{
     color:#c8d3df;
     cursor:not-allowed;
 }
 
 .timer{
     display:block;
-    margin-top:6px;
+    margin-top:5px;
     color:#c8d3df;
     font-size:14px;
-    min-height:20px;
 }
 
-@media (max-width: 480px){
-    h1{ font-size:26px; }
-    .dog{ width:220px; }
-    .otp-input{ width:44px; height:44px; font-size:20px; }
+@media (max-width: 700px){
+    h1{ font-size:36px; }
+    .dog{ width:100%; }
+    .codigo input, .otp-input{ width:44px; height:44px; font-size:18px; }
     .codigo{ gap:8px; }
     .logo{ width:80px; top:20px; right:20px; }
+    .logo img{ width:80px; }
 }

@@ -34,11 +34,15 @@
                         </td>
                         <td class="product-column">
                             @if($firstItem && $firstItem->product)
-                                <img
-                                    src="{{ asset('storage/' . $firstItem->product->image) }}"
-                                    alt="{{ $firstItem->product->name }}"
-                                    class="product-image"
-                                >
+                                @if($firstItem->product->image)
+                                    <img
+                                        src="{{ asset('storage/' . $firstItem->product->image) }}"
+                                        alt="{{ $firstItem->product->name }}"
+                                        class="product-image"
+                                    >
+                                @else
+                                    <div class="product-image" style="display:grid;place-items:center;font-size:1.8rem;background:#f0f6ff;border-radius:10px;">🐾</div>
+                                @endif
                                 @if($order->items->count() > 1)
                                     <span class="more-items"
                                         data-i18n="orders.more_items"
