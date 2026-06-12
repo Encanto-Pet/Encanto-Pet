@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\OtpVerificationController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
@@ -37,6 +38,19 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+
+    // ── OTP email verification ──────────────────────────────────────────────
+    Route::get('verificar-email', [OtpVerificationController::class, 'show'])
+        ->name('otp.show');
+
+    Route::post('verificar-email', [OtpVerificationController::class, 'verify'])
+        ->name('otp.verify');
+
+    Route::post('verificar-email/reenviar', [OtpVerificationController::class, 'resend'])
+        ->middleware('throttle:5,1')
+        ->name('otp.resend');
+
+    // ── Laravel standard verification (redirects to OTP page) ───────────────
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
 
@@ -48,6 +62,7 @@ Route::middleware('auth')->group(function () {
         ->middleware('throttle:6,1')
         ->name('verification.send');
 
+    // ── Password & session ──────────────────────────────────────────────────
     Route::get('confirm-password', [ConfirmablePasswordController::class, 'show'])
         ->name('password.confirm');
 
@@ -57,12 +72,13 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
-        Route::middleware(['auth', 'admin'])->group(function () {
 
-    Route::get('/admin', function () {
-        return view('admin.dashboard');
+    // ── Admin ───────────────────────────────────────────────────────────────
+    Route::middleware(['admin'])->group(function () {
+        Route::get('/admin', function () {
+            return view('admin.dashboard');
+        });
+
+        Route::resource('products', ProductController::class);
     });
-
-    Route::resource('products', ProductController::class);
-});
 });

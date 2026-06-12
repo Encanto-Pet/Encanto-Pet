@@ -207,6 +207,12 @@ a {
     background: transparent;
     text-decoration: none;
     cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.icons a:hover,
+.cart-icon:hover {
+    color: var(--yellow-dark);
 }
 
 .cart-icon {

@@ -55,6 +55,10 @@ Route::middleware('auth')->group(function () {
 
 });
 
+Route::get('/contact', function () {
+    return view('contact');
+})->middleware('auth')->name('contact');
+
 Route::get('/admin/dashboard', [DashboardController::class, 'dashboard'])
     ->middleware(['auth', 'admin'])
     ->name('admin.dashboard');

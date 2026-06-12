@@ -5,14 +5,14 @@
     <!-- ESQUERDA -->
     <section class="left">
 
-        <h1>
+        <h1 data-i18n="register.title">
             Seu pet autorizou<br>
             esse cadastro!
         </h1>
 
         <p class="subtitle">
-            Mas caso já tenha cadastro,<br> 
-            <a href="{{ route('login') }}">Acesse sua conta!</a>
+            <span data-i18n="register.subtitle">Mas caso já tenha cadastro,</span><br>
+            <a href="{{ route('login') }}" data-i18n="register.login_link">Acesse sua conta!</a>
         </p>
 
         <div class="wrapper">
@@ -21,9 +21,9 @@
 
                 <!-- NOME -->
                 <div class="input-group">
-                    <label for="name">Nome</label>
+                    <label for="name" data-i18n="register.name">Nome</label>
 
-                    <x-text-input 
+                    <x-text-input
                         id="name"
                         name="name"
                         type="text"
@@ -39,9 +39,9 @@
 
                 <!-- EMAIL -->
                 <div class="input-group">
-                    <label for="email">Email</label>
+                    <label for="email" data-i18n="register.email">Email</label>
 
-                    <x-text-input 
+                    <x-text-input
                         id="email"
                         name="email"
                         type="email"
@@ -56,9 +56,9 @@
 
                 <!-- SENHA -->
                 <div class="input-group">
-                    <label for="password">Senha</label>
+                    <label for="password" data-i18n="register.password">Senha</label>
 
-                    <x-text-input 
+                    <x-text-input
                         id="password"
                         name="password"
                         type="password"
@@ -72,9 +72,9 @@
 
                 <!-- CONFIRMAR SENHA -->
                 <div class="input-group">
-                    <label for="password_confirmation">Confirmação de senha</label>
+                    <label for="password_confirmation" data-i18n="register.confirm_password">Confirmação de senha</label>
 
-                    <x-text-input 
+                    <x-text-input
                         id="password_confirmation"
                         name="password_confirmation"
                         type="password"
@@ -86,28 +86,25 @@
                     <x-input-error :messages="$errors->get('password_confirmation')" class="error" />
                 </div>
 
-                <!-- BOTÃO -->
-             
                 <!-- EXTRAS -->
                 <div class="extras">
 
                     <label class="check">
                         <input type="checkbox" name="remember">
-                        Lembrar a senha
+                        <span data-i18n="register.remember">Lembrar a senha</span>
                     </label>
 
                     <label class="check">
                         <input type="checkbox" required>
-                        Aceito com os 
-                        <a href="#">Termos de Uso</a> 
-                        e 
-                        <a href="#">Política</a>
+                        <span data-i18n="register.terms_prefix">Aceito com os </span>
+                        <a href="#" data-i18n="register.terms_link">Termos de Uso</a>
+                        <span data-i18n="register.terms_and"> e </span>
+                        <a href="#" data-i18n="register.policy_link">Política</a>
                     </label>
 
-                       <x-primary-button class="btn">
-                            Finalizar!
-                        </x-primary-button>
-
+                    <x-primary-button class="btn" data-i18n="register.submit">
+                        Finalizar!
+                    </x-primary-button>
 
                 </div>
 

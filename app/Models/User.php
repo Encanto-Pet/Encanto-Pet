@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
- class User extends Authenticatable //implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
@@ -50,5 +50,7 @@ use Illuminate\Notifications\Notifiable;
     {
         return in_array(strtolower((string) $this->role), ['admin', 'adm', 'administrator'], true);
     }
-    
+
+    // OTP flow owns the email sending — suppress the default link-based notification.
+    public function sendEmailVerificationNotification(): void {}
 }

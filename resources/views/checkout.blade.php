@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="pt-BR">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,7 +8,10 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Pacifico&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+    <link rel="stylesheet" href="{{ asset('css/i18n.css') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script src="{{ asset('js/i18n/translations.js') }}"></script>
+    <script src="{{ asset('js/i18n/i18n.js') }}"></script>
     <style>
         .checkout-modal-overlay {
             position: fixed;
@@ -293,39 +296,59 @@
             </div>
 
             <nav class="menu">
-                <a href="/#produtos">Produtos</a>
-                <a href="/#categorias">Cachorros</a>
-                <a href="/#categorias">Gatos</a>
-                <a href="/#ofertas">Promoções</a>
-                <a href="#">Adote aqui!</a>
-                <a href="#footer">Nosso contato</a>
+                <a href="/#produtos"    data-i18n="nav.products">Produtos</a>
+                <a href="/#categorias"  data-i18n="nav.dogs">Cachorros</a>
+                <a href="/#categorias"  data-i18n="nav.cats">Gatos</a>
+                <a href="/#ofertas"     data-i18n="nav.promotions">Promoções</a>
+                <a href="#"             data-i18n="nav.adopt">Adote aqui!</a>
+                <a href="#footer"       data-i18n="nav.contact">Nosso contato</a>
             </nav>
 
             <div class="nav-right">
                 <form class="search" role="search">
-                    <input type="search" name="search" placeholder="Pesquise produtos..." autocomplete="off">
-                    <button type="submit" aria-label="Pesquisar">
+                    <input type="search" name="search"
+                        data-i18n-placeholder="nav.search_placeholder"
+                        placeholder="Pesquise produtos..."
+                        autocomplete="off">
+                    <button type="submit" data-i18n-aria="nav.search_label" aria-label="Pesquisar">
                         <img src="{{ asset('assets/icon/lupa.svg') }}" alt="">
                     </button>
                 </form>
 
                 @auth
                     <div class="home-auth-links">
-                        <a href="{{ auth()->user()->isAdmin() ? route('admin.dashboard') : route('dashboard') }}">Dashboard</a>
+                        <a href="{{ auth()->user()->isAdmin() ? route('admin.dashboard') : route('dashboard') }}" data-i18n="nav.dashboard">Dashboard</a>
                     </div>
                 @endauth
 
                 <div class="icons">
-                    <a href="#" aria-label="Notificação"><i class="ph ph-bell"></i></a>
+                    <a href="#" data-i18n-aria="nav.notification" aria-label="Notificação"><i class="ph ph-bell"></i></a>
                     @if (Route::has('login'))
                         @auth
-                            <a href="{{ auth()->user()->isAdmin() ? route('admin.dashboard') : route('dashboard') }}" aria-label="Dashboard"><i class="ph ph-user"></i></a>
+                            <a href="{{ auth()->user()->isAdmin() ? route('admin.dashboard') : route('dashboard') }}" data-i18n-aria="nav.dashboard" aria-label="Dashboard"><i class="ph ph-user"></i></a>
                         @else
                             <a href="{{ route('login') }}" aria-label="Login"><i class="ph ph-user"></i></a>
                         @endauth
                     @endif
-                    <a href="#" aria-label="Internacionalização"><i class="ph ph-globe-hemisphere-west"></i></a>
-                    <a class="cart-icon" href="{{ route('checkout') }}" aria-label="Carrinho">
+
+                    {{-- Seletor de idioma --}}
+                    <div class="lang-switcher">
+                        <button class="lang-btn" onclick="toggleLangMenu(event)" data-i18n-aria="nav.lang_label" aria-label="Selecionar idioma">
+                            <i class="ph ph-globe-hemisphere-west"></i>
+                        </button>
+                        <div class="lang-menu" id="langMenu">
+                            <button class="lang-option" data-lang="pt_BR" onclick="setLanguage('pt_BR')">
+                                <span class="lang-flag">🇧🇷</span>
+                                <span data-i18n="lang.pt_BR">Português (Brasil)</span>
+                            </button>
+                            <button class="lang-option" data-lang="en" onclick="setLanguage('en')">
+                                <span class="lang-flag">🇺🇸</span>
+                                <span data-i18n="lang.en">English</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <a class="cart-icon" href="{{ route('checkout') }}" data-i18n-aria="nav.cart" aria-label="Carrinho">
                         <i class="ph ph-shopping-cart-simple"></i>
                         <span id="cart-count">0</span>
                     </a>
@@ -343,8 +366,8 @@
             <span class="bone-deco" aria-hidden="true">🦴</span>
 
             <div class="checkout-left">
-                <h1 class="checkout-page-title">Seu pet autorizou esse pagamento :)</h1>
-                <p class="checkout-page-sub">Selecione o método de pagamento</p>
+                <h1 class="checkout-page-title" data-i18n="checkout.title">Seu pet autorizou esse pagamento :)</h1>
+                <p class="checkout-page-sub" data-i18n="checkout.subtitle">Selecione o método de pagamento</p>
 
                 <div class="order-items" id="checkout-items">
                     @forelse($products as $product)
@@ -364,8 +387,8 @@
                         </div>
                     @empty
                         <div class="checkout-empty">
-                            <strong>Seu carrinho está vazio.</strong>
-                            <a href="/#produtos">Escolher produtos</a>
+                            <strong data-i18n="checkout.empty">Seu carrinho está vazio.</strong>
+                            <a href="/#produtos" data-i18n="checkout.choose_products">Escolher produtos</a>
                         </div>
                     @endforelse
                 </div>
@@ -374,7 +397,7 @@
             <aside class="checkout-right">
                 <div class="order-summary">
                     <div class="summary-row">
-                        <span class="summary-label">Subtotal:</span>
+                        <span class="summary-label" data-i18n="checkout.subtotal">Subtotal:</span>
                         <span
                             class="summary-value"
                             id="checkout-subtotal"
@@ -382,12 +405,12 @@
                         >R$ {{ number_format($fallbackSubtotal, 2, ',', '.') }}</span>
                     </div>
                     <div class="summary-row">
-                        <span class="summary-label">Taxas</span>
-                        <span class="summary-free">Frete Grátis</span>
+                        <span class="summary-label" data-i18n="checkout.fees">Taxas</span>
+                        <span class="summary-free" data-i18n="checkout.free_shipping">Frete Grátis</span>
                     </div>
                     <hr>
                     <div class="summary-row summary-total">
-                        <span class="summary-label">Total:</span>
+                        <span class="summary-label" data-i18n="checkout.total">Total:</span>
                         <span
                             class="summary-value"
                             id="checkout-total"
@@ -399,19 +422,19 @@
                 <div class="payment-section">
                     <button class="payment-option" type="button" onclick="selectPayment(this)">
                         <span class="radio-circle selected"><span class="radio-dot"></span></span>
-                        Cartão de crédito
+                        <span data-i18n="checkout.credit_card">Cartão de crédito</span>
                     </button>
                     <button class="payment-option" type="button" onclick="selectPayment(this)">
                         <span class="radio-circle"></span>
-                        Cartão de débito
+                        <span data-i18n="checkout.debit_card">Cartão de débito</span>
                     </button>
                     <button class="payment-option" type="button" onclick="selectPayment(this)">
                         <span class="radio-circle"></span>
-                        Pix
+                        <span data-i18n="checkout.pix">Pix</span>
                     </button>
                 </div>
 
-                <button class="btn-checkout" type="button" onclick="finishCheckout()">Finalizar pagamento!</button>
+                <button class="btn-checkout" type="button" onclick="finishCheckout()" data-i18n="checkout.finish">Finalizar pagamento!</button>
             </aside>
 
             <div class="checkout-pet-deco" aria-hidden="true"><img src="{{ asset('assets/img/gato-pagamento.svg') }}" alt=""></div>
@@ -419,45 +442,45 @@
         </section>
 
         <div class="checkout-back">
-            <a href="/#produtos">← Voltar aos produtos</a>
+            <a href="/#produtos" data-i18n="checkout.back_products">← Voltar aos produtos</a>
         </div>
 
         <section class="checkout-address-body checkout-step is-hidden" id="address-step">
             <div class="checkout-left">
-                <h1 class="checkout-page-title">Insira o endere&ccedil;o para entrega do pacote!</h1>
-                <p class="checkout-page-sub">A felicidade do seu pet chega em at&eacute; 12 dias :)</p>
+                <h1 class="checkout-page-title" data-i18n="checkout.address_title">Insira o endereço para entrega do pacote!</h1>
+                <p class="checkout-page-sub" data-i18n="checkout.address_sub">A felicidade do seu pet chega em até 12 dias :)</p>
 
                 <div class="checkout-map" aria-hidden="true"></div>
 
                 <div class="checkout-address-note">
                     <i class="ph ph-map-pin"></i>
-                    <span id="address-preview">Endere&ccedil;o cadastrado: preencha os dados para entrega.</span>
+                    <span id="address-preview" data-i18n="checkout.address_placeholder">Endereço cadastrado: preencha os dados para entrega.</span>
                 </div>
             </div>
 
             <form class="address-form" id="delivery-address-form">
                 <div class="address-field">
-                    <label for="delivery-street">Rua</label>
+                    <label for="delivery-street" data-i18n="checkout.street">Rua</label>
                     <input id="delivery-street" name="street" type="text" autocomplete="street-address" required>
                 </div>
                 <div class="address-field">
-                    <label for="delivery-zip">CEP</label>
+                    <label for="delivery-zip" data-i18n="checkout.zip">CEP</label>
                     <input id="delivery-zip" name="zip" type="text" autocomplete="postal-code" required>
                 </div>
                 <div class="address-field">
-                    <label for="delivery-city">Cidade</label>
+                    <label for="delivery-city" data-i18n="checkout.city">Cidade</label>
                     <input id="delivery-city" name="city" type="text" autocomplete="address-level2" required>
                 </div>
                 <div class="address-field">
-                    <label for="delivery-number">N&uacute;mero</label>
+                    <label for="delivery-number" data-i18n="checkout.number">Número</label>
                     <input id="delivery-number" name="number" type="text" required>
                 </div>
                 <div class="address-field">
-                    <label for="delivery-complement">Complemento</label>
+                    <label for="delivery-complement" data-i18n="checkout.complement">Complemento</label>
                     <input id="delivery-complement" name="complement" type="text">
                 </div>
 
-                <button class="address-submit" type="submit">Finalizar a compra</button>
+                <button class="address-submit" type="submit" data-i18n="checkout.finish_purchase">Finalizar a compra</button>
             </form>
         </section>
     </main>
@@ -465,193 +488,166 @@
     <footer id="footer">
         <div>
             <h4>🐾 Encanto Pet</h4>
-            <p>Obrigado pela visita. Seu pet provavelmente já está escolhendo a próxima compra.</p>
+            <p data-i18n="footer.checkout_tagline">Obrigado pela visita. Seu pet provavelmente já está escolhendo a próxima compra.</p>
         </div>
         <div>
-            <h4>Adote Aqui</h4>
+            <h4 data-i18n="footer.checkout_adopt">Adote Aqui</h4>
             <ul>
-                <li>Cachorros</li>
-                <li>Gatos</li>
-                <li>Pássaros</li>
+                <li data-i18n="footer.dogs">Cachorros</li>
+                <li data-i18n="footer.cats">Gatos</li>
+                <li data-i18n="footer.birds">Pássaros</li>
             </ul>
         </div>
         <div>
-            <h4>Contatos</h4>
+            <h4 data-i18n="footer.checkout_contacts">Contatos</h4>
             <ul>
                 <li>contato@encantopet.com</li>
                 <li>(11) 99999-9999</li>
             </ul>
         </div>
         <div>
-            <h4>Endereço</h4>
+            <h4 data-i18n="footer.checkout_address_label">Endereço</h4>
             <ul>
                 <li>São Paulo, SP</li>
                 <li>Encanto Pet</li>
             </ul>
         </div>
     </footer>
-    <div class="footer-bottom">© 2026 Encanto Pet</div>
+    <div class="footer-bottom" data-i18n="footer.checkout_copyright">© 2026 Encanto Pet</div>
 
     <div id="toast"></div>
 
+    {{-- ── Modais de pagamento ── --}}
     <div class="checkout-modal-overlay" id="payment-modal-overlay" aria-hidden="true">
         <div class="checkout-success-modal pay-modal" id="modal-credit" role="dialog" aria-modal="true" aria-labelledby="modal-credit-title">
             <button class="modal-close" type="button" data-close-payment><i class="ph ph-x"></i></button>
-            <h2 id="modal-credit-title">Cadastre o seu cart&atilde;o de cr&eacute;dito</h2>
+            <h2 id="modal-credit-title" data-i18n="checkout.credit_modal_title">Cadastre o seu cartão de crédito</h2>
             <div class="payment-card-preview">
                 <span>mastercard</span>
                 <strong id="credit-card-preview">•••• •••• •••• ••••</strong>
                 <span>Credit Card</span>
             </div>
             <div class="payment-form-fields">
-                <input type="text" maxlength="19" placeholder="N&uacute;mero do cart&atilde;o" data-card-input data-card-target="credit-card-preview">
-                <input type="text" maxlength="3" placeholder="CVC">
-                <input type="text" maxlength="5" placeholder="MM/AA">
-                <input type="text" placeholder="Nome registrado no cart&atilde;o">
+                <input type="text" maxlength="19" data-i18n-placeholder="checkout.card_number" placeholder="Número do cartão" data-card-input data-card-target="credit-card-preview">
+                <input type="text" maxlength="3"  data-i18n-placeholder="checkout.cvc"         placeholder="CVC">
+                <input type="text" maxlength="5"  data-i18n-placeholder="checkout.expiry"      placeholder="MM/AA">
+                <input type="text"                data-i18n-placeholder="checkout.card_name"    placeholder="Nome registrado no cartão">
             </div>
-            <button class="btn-checkout" type="button" data-confirm-payment>Confirmar pagamento</button>
+            <button class="btn-checkout" type="button" data-confirm-payment data-i18n="checkout.confirm_payment">Confirmar pagamento</button>
         </div>
 
         <div class="checkout-success-modal pay-modal" id="modal-debit" role="dialog" aria-modal="true" aria-labelledby="modal-debit-title">
             <button class="modal-close" type="button" data-close-payment><i class="ph ph-x"></i></button>
-            <h2 id="modal-debit-title">Cadastre o seu cart&atilde;o de d&eacute;bito</h2>
+            <h2 id="modal-debit-title" data-i18n="checkout.debit_modal_title">Cadastre o seu cartão de débito</h2>
             <div class="payment-card-preview debit">
                 <span>mastercard</span>
                 <strong id="debit-card-preview">•••• •••• •••• ••••</strong>
                 <span>Debit Card</span>
             </div>
             <div class="payment-form-fields">
-                <input type="text" maxlength="19" placeholder="N&uacute;mero do cart&atilde;o" data-card-input data-card-target="debit-card-preview">
-                <input type="text" maxlength="3" placeholder="CVC">
-                <input type="text" maxlength="5" placeholder="MM/AA">
-                <input type="text" placeholder="Nome registrado no cart&atilde;o">
+                <input type="text" maxlength="19" data-i18n-placeholder="checkout.card_number" placeholder="Número do cartão" data-card-input data-card-target="debit-card-preview">
+                <input type="text" maxlength="3"  data-i18n-placeholder="checkout.cvc"         placeholder="CVC">
+                <input type="text" maxlength="5"  data-i18n-placeholder="checkout.expiry"      placeholder="MM/AA">
+                <input type="text"                data-i18n-placeholder="checkout.card_name"    placeholder="Nome registrado no cartão">
             </div>
-            <button class="btn-checkout" type="button" data-confirm-payment>Confirmar pagamento</button>
+            <button class="btn-checkout" type="button" data-confirm-payment data-i18n="checkout.confirm_payment">Confirmar pagamento</button>
         </div>
 
         <div class="checkout-success-modal pay-modal" id="modal-pix" role="dialog" aria-modal="true" aria-labelledby="modal-pix-title">
             <button class="modal-close" type="button" data-close-payment><i class="ph ph-x"></i></button>
-            <h2 id="modal-pix-title">Aponte sua c&acirc;mera para escanear o QR Code</h2>
+            <h2 id="modal-pix-title" data-i18n="checkout.pix_modal_title">Aponte sua câmera para escanear o QR Code</h2>
             <div class="pix-box" aria-hidden="true"></div>
-            <p>O pagamento cai na hora e a compra &eacute; validada instantaneamente.</p>
-            <button class="btn-checkout" type="button" data-confirm-payment>Confirmar Pix</button>
+            <p data-i18n="checkout.pix_desc">O pagamento cai na hora e a compra é validada instantaneamente.</p>
+            <button class="btn-checkout" type="button" data-confirm-payment data-i18n="checkout.confirm_pix">Confirmar Pix</button>
         </div>
     </div>
 
+    {{-- ── Modal de sucesso ── --}}
     <div class="checkout-modal-overlay" id="checkout-success-overlay" aria-hidden="true">
         <div class="checkout-success-modal" role="dialog" aria-modal="true" aria-labelledby="checkout-success-title">
             <div class="checkout-success-badge" aria-hidden="true"><i class="ph ph-check"></i></div>
-            <h2 id="checkout-success-title">Pedido criado com sucesso!</h2>
-            <p>Obrigada por confiar no nosso trabalho. Agora voc&ecirc; j&aacute; pode acompanhar o andamento do pedido.</p>
+            <h2 id="checkout-success-title" data-i18n="checkout.success_title">Pedido criado com sucesso!</h2>
+            <p data-i18n="checkout.success_desc">Obrigada por confiar no nosso trabalho. Agora você já pode acompanhar o andamento do pedido.</p>
             <div class="checkout-success-actions">
-                <a href="{{ route('orders.index') }}">Acompanhar meu pedido</a>
-                <button type="button" id="checkout-continue-shopping">Continuar comprando</button>
+                <a href="{{ route('orders.index') }}" data-i18n="checkout.track_order">Acompanhar meu pedido</a>
+                <button type="button" id="checkout-continue-shopping" data-i18n="checkout.continue_shopping">Continuar comprando</button>
             </div>
         </div>
     </div>
 
     <script type="module">
         const cartStorageKey = 'encantoPetCart';
-        const checkoutItems = document.getElementById('checkout-items');
-        const subtotalElement = document.getElementById('checkout-subtotal');
-        const totalElement = document.getElementById('checkout-total');
-        const paymentStep = document.getElementById('payment-step');
-        const addressStep = document.getElementById('address-step');
+        const checkoutItems  = document.getElementById('checkout-items');
+        const subtotalEl     = document.getElementById('checkout-subtotal');
+        const totalEl        = document.getElementById('checkout-total');
+        const paymentStep    = document.getElementById('payment-step');
+        const addressStep    = document.getElementById('address-step');
         const paymentOverlay = document.getElementById('payment-modal-overlay');
         const successOverlay = document.getElementById('checkout-success-overlay');
-        const continueShoppingButton = document.getElementById('checkout-continue-shopping');
-        const addressForm = document.getElementById('delivery-address-form');
+        const continueBtn    = document.getElementById('checkout-continue-shopping');
+        const addressForm    = document.getElementById('delivery-address-form');
         const addressPreview = document.getElementById('address-preview');
-        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+        const csrfToken      = document.querySelector('meta[name="csrf-token"]')?.content;
         const createOrderUrl = @json(route('orders.store'));
-        const ordersUrl = @json(route('orders.index'));
-        const loginUrl = @json(route('login'));
+        const ordersUrl      = @json(route('orders.index'));
+        const loginUrl       = @json(route('login'));
         const canCreateOrder = @json(auth()->check());
         let selectedPaymentMethod = 'credit';
 
-        function readCheckoutCart() {
-            try {
-                return JSON.parse(localStorage.getItem(cartStorageKey)) || [];
-            } catch {
-                return [];
-            }
+        const _t = (key) => window.i18n?.t(key) || key;
+
+        function readCart()        { try { return JSON.parse(localStorage.getItem(cartStorageKey)) || []; } catch { return []; } }
+        function writeCart(cart)   { localStorage.setItem(cartStorageKey, JSON.stringify(cart)); }
+        function formatCurrency(v) { return Number(v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
+        function escHtml(v)        { return String(v || '').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;').replaceAll("'",'&#039;'); }
+
+        function updateCartCount() {
+            const c = document.getElementById('cart-count');
+            if (c) c.textContent = readCart().length;
         }
 
-        function writeCheckoutCart(cart) {
-            localStorage.setItem(cartStorageKey, JSON.stringify(cart));
-        }
-
-        function formatCheckoutCurrency(value) {
-            return Number(value || 0).toLocaleString('pt-BR', {
-                style: 'currency',
-                currency: 'BRL',
-            });
-        }
-
-        function escapeCheckoutHtml(value) {
-            return String(value || '')
-                .replaceAll('&', '&amp;')
-                .replaceAll('<', '&lt;')
-                .replaceAll('>', '&gt;')
-                .replaceAll('"', '&quot;')
-                .replaceAll("'", '&#039;');
-        }
-
-        function updateCheckoutCartCount() {
-            const counter = document.getElementById('cart-count');
-            if (counter) counter.textContent = readCheckoutCart().length;
-        }
-
-        function renderCheckoutCartFromStorage() {
-            if (!checkoutItems || !subtotalElement || !totalElement) return;
-
-            const cart = readCheckoutCart();
+        function renderCart() {
+            if (!checkoutItems || !subtotalEl || !totalEl) return;
+            const cart = readCart();
 
             if (!cart.length) {
                 checkoutItems.innerHTML = `
                     <div class="checkout-empty">
-                        <strong>Seu carrinho est&aacute; vazio.</strong>
-                        <a href="/#produtos">Escolher produtos</a>
-                    </div>
-                `;
-                subtotalElement.textContent = 'R$ 0,00';
-                totalElement.textContent = 'R$ 0,00';
+                        <strong>${_t('checkout.empty')}</strong>
+                        <a href="/#produtos">${_t('checkout.choose_products')}</a>
+                    </div>`;
+                subtotalEl.textContent = 'R$ 0,00';
+                totalEl.textContent    = 'R$ 0,00';
                 return;
             }
 
             checkoutItems.innerHTML = cart.map((item) => `
                 <div class="order-item">
                     <div class="order-item-img">
-                        ${item.image ? `<img src="${escapeCheckoutHtml(item.image)}" alt="${escapeCheckoutHtml(item.name)}">` : '<span>&#128062;</span>'}
+                        ${item.image ? `<img src="${escHtml(item.image)}" alt="${escHtml(item.name)}">` : '<span>&#128062;</span>'}
                     </div>
                     <div class="order-item-text">
-                        <div class="order-item-name">${escapeCheckoutHtml(item.name)}</div>
-                        <div class="order-item-desc">${escapeCheckoutHtml(item.description || 'Produto Encanto Pet')}</div>
-                        <div class="order-item-price">${formatCheckoutCurrency(item.price)}</div>
+                        <div class="order-item-name">${escHtml(item.name)}</div>
+                        <div class="order-item-desc">${escHtml(item.description || _t('checkout.product_default'))}</div>
+                        <div class="order-item-price">${formatCurrency(item.price)}</div>
                     </div>
-                </div>
-            `).join('');
+                </div>`).join('');
 
-            const subtotal = cart.reduce((sum, item) => sum + Number(item.price || 0), 0);
-            subtotalElement.textContent = formatCheckoutCurrency(subtotal);
-            totalElement.textContent = formatCheckoutCurrency(subtotal);
+            const subtotal = cart.reduce((s, i) => s + Number(i.price || 0), 0);
+            subtotalEl.textContent = formatCurrency(subtotal);
+            totalEl.textContent    = formatCurrency(subtotal);
         }
 
         function closePaymentModal() {
             paymentOverlay.classList.remove('is-open');
             paymentOverlay.setAttribute('aria-hidden', 'true');
-            document.querySelectorAll('.pay-modal').forEach((modal) => modal.classList.remove('is-open'));
+            document.querySelectorAll('.pay-modal').forEach((m) => m.classList.remove('is-open'));
         }
 
         function openPaymentModal() {
-            const modalId = {
-                credit: 'modal-credit',
-                debit: 'modal-debit',
-                pix: 'modal-pix',
-            }[selectedPaymentMethod] || 'modal-credit';
-
-            document.querySelectorAll('.pay-modal').forEach((modal) => modal.classList.remove('is-open'));
-            document.getElementById(modalId)?.classList.add('is-open');
+            const id = { credit: 'modal-credit', debit: 'modal-debit', pix: 'modal-pix' }[selectedPaymentMethod] || 'modal-credit';
+            document.querySelectorAll('.pay-modal').forEach((m) => m.classList.remove('is-open'));
+            document.getElementById(id)?.classList.add('is-open');
             paymentOverlay.classList.add('is-open');
             paymentOverlay.setAttribute('aria-hidden', 'false');
         }
@@ -668,141 +664,90 @@
             successOverlay.setAttribute('aria-hidden', 'false');
         }
 
-        function selectedPaymentLabel(option) {
-            return option.textContent.toLowerCase();
-        }
-
-        window.selectPayment = function selectPayment(option) {
-            document.querySelectorAll('.payment-option .radio-circle').forEach((circle) => {
-                circle.classList.remove('selected');
-                circle.innerHTML = '';
-            });
-
-            const selectedCircle = option.querySelector('.radio-circle');
-            selectedCircle.classList.add('selected');
-            selectedCircle.innerHTML = '<div class="radio-dot"></div>';
-
-            const label = selectedPaymentLabel(option);
-            selectedPaymentMethod = label.includes('débito') || label.includes('debito')
-                ? 'debit'
-                : (label.includes('pix') ? 'pix' : 'credit');
+        window.selectPayment = function (option) {
+            document.querySelectorAll('.payment-option .radio-circle').forEach((c) => { c.classList.remove('selected'); c.innerHTML = ''; });
+            const circle = option.querySelector('.radio-circle');
+            circle.classList.add('selected');
+            circle.innerHTML = '<div class="radio-dot"></div>';
+            const label = option.textContent.toLowerCase();
+            selectedPaymentMethod = label.includes('débito') || label.includes('debito') ? 'debit' : (label.includes('pix') ? 'pix' : 'credit');
         };
 
-        window.finishCheckout = function finishCheckout() {
-            const cart = readCheckoutCart();
-
-            if (!cart.length) {
-                window.showToast?.('Adicione um produto ao carrinho antes de finalizar.');
-                return;
-            }
-
+        window.finishCheckout = function () {
+            if (!readCart().length) { window.showToast?.(_t('checkout.toast_add_item')); return; }
             openPaymentModal();
         };
 
-        document.querySelectorAll('[data-close-payment]').forEach((button) => {
-            button.addEventListener('click', closePaymentModal);
-        });
-
-        document.querySelectorAll('[data-confirm-payment]').forEach((button) => {
-            button.addEventListener('click', showAddressStep);
-        });
+        document.querySelectorAll('[data-close-payment]').forEach((b) => b.addEventListener('click', closePaymentModal));
+        document.querySelectorAll('[data-confirm-payment]').forEach((b) => b.addEventListener('click', showAddressStep));
 
         document.querySelectorAll('[data-card-input]').forEach((input) => {
             input.addEventListener('input', () => {
-                const value = input.value.replace(/\D/g, '').slice(0, 16);
-                input.value = value.replace(/(.{4})/g, '$1 ').trim();
+                const val = input.value.replace(/\D/g, '').slice(0, 16);
+                input.value = val.replace(/(.{4})/g, '$1 ').trim();
                 const preview = document.getElementById(input.dataset.cardTarget);
                 if (preview) preview.textContent = input.value || '•••• •••• •••• ••••';
             });
         });
 
-        paymentOverlay.addEventListener('click', (event) => {
-            if (event.target === paymentOverlay) closePaymentModal();
-        });
+        paymentOverlay.addEventListener('click', (e) => { if (e.target === paymentOverlay) closePaymentModal(); });
 
         addressForm.addEventListener('input', () => {
-            const data = new FormData(addressForm);
-            const street = data.get('street') || 'Rua';
-            const number = data.get('number') || 'Nº';
-            const city = data.get('city') || 'Cidade';
-            const zip = data.get('zip') || 'CEP';
-            addressPreview.textContent = `Endereço cadastrado: ${street}, ${number} - ${city} - ${zip}`;
+            const d = new FormData(addressForm);
+            const street = d.get('street') || 'Rua';
+            const number = d.get('number') || 'Nº';
+            const city   = d.get('city')   || 'Cidade';
+            const zip    = d.get('zip')    || 'CEP';
+            addressPreview.textContent = `${_t('checkout.address_prefix')} ${street}, ${number} - ${city} - ${zip}`;
         });
 
-        addressForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
+        addressForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const cart = readCart();
+            if (!cart.length) { window.showToast?.(_t('checkout.toast_empty_cart')); return; }
+            if (!canCreateOrder) { window.showToast?.(_t('checkout.toast_login')); window.location.href = loginUrl; return; }
 
-            const cart = readCheckoutCart();
-            if (!cart.length) {
-                window.showToast?.('Seu carrinho está vazio.');
-                return;
-            }
-
-            if (!canCreateOrder) {
-                window.showToast?.('Entre na sua conta para salvar o pedido em Meus pedidos.');
-                window.location.href = loginUrl;
-                return;
-            }
-
-            const data = new FormData(addressForm);
-            const submitButton = addressForm.querySelector('button[type="submit"]');
-            submitButton.disabled = true;
-            submitButton.textContent = 'Finalizando...';
+            const d = new FormData(addressForm);
+            const submitBtn = addressForm.querySelector('button[type="submit"]');
+            submitBtn.disabled = true;
+            submitBtn.textContent = _t('checkout.processing');
 
             try {
-                const response = await fetch(createOrderUrl, {
+                const res = await fetch(createOrderUrl, {
                     method: 'POST',
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': csrfToken,
-                    },
+                    headers: { 'Accept': 'application/json', 'Content-Type': 'application/json', 'X-CSRF-TOKEN': csrfToken },
                     body: JSON.stringify({
                         payment_method: selectedPaymentMethod,
-                        address: {
-                            street: data.get('street'),
-                            zip: data.get('zip'),
-                            city: data.get('city'),
-                            number: data.get('number'),
-                            complement: data.get('complement'),
-                        },
-                        items: cart.map((item) => ({
-                            id: item.id,
-                            quantity: item.quantity || 1,
-                        })),
+                        address: { street: d.get('street'), zip: d.get('zip'), city: d.get('city'), number: d.get('number'), complement: d.get('complement') },
+                        items: cart.map((i) => ({ id: i.id, quantity: i.quantity || 1 })),
                     }),
                 });
-
-                if (!response.ok) throw new Error('order_error');
-
-                const result = await response.json();
+                if (!res.ok) throw new Error('order_error');
+                const result = await res.json();
                 const followLink = successOverlay.querySelector('a');
                 followLink.href = result.orders_url || ordersUrl;
-
-                writeCheckoutCart([]);
-                updateCheckoutCartCount();
-                renderCheckoutCartFromStorage();
+                writeCart([]);
+                updateCartCount();
+                renderCart();
                 showSuccessModal();
             } catch {
-                window.showToast?.('Não foi possível finalizar o pedido. Confira os dados e tente novamente.');
+                window.showToast?.(_t('checkout.toast_order_error'));
             } finally {
-                submitButton.disabled = false;
-                submitButton.textContent = 'Finalizar a compra';
+                submitBtn.disabled = false;
+                submitBtn.textContent = _t('checkout.finish_purchase');
             }
         });
 
-        successOverlay.addEventListener('click', (event) => {
-            if (event.target !== successOverlay) return;
+        successOverlay.addEventListener('click', (e) => {
+            if (e.target !== successOverlay) return;
             successOverlay.classList.remove('is-open');
             successOverlay.setAttribute('aria-hidden', 'true');
         });
 
-        continueShoppingButton.addEventListener('click', () => {
-            window.location.href = '/#produtos';
-        });
+        continueBtn.addEventListener('click', () => { window.location.href = '/#produtos'; });
 
-        updateCheckoutCartCount();
-        renderCheckoutCartFromStorage();
+        updateCartCount();
+        renderCart();
     </script>
 </body>
 </html>
