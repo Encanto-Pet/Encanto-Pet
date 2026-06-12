@@ -1,2 +1,5 @@
+[phases.install]
+cmds = ["composer install --no-scripts --no-interaction --ignore-platform-reqs && composer dump-autoload --optimize"]
+
 [phases.build]
 cmds = ["npm ci && npm run build"]
