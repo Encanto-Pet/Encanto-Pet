@@ -1,2 +1,1 @@
-[phases.build]
-cmds = ["npm ci && npm run build"]
+# Assets pre-buildados estao no repositorio, nao e necessario rodar npm build
