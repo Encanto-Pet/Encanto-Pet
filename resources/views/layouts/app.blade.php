@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Encanto Pet - Perfil</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/img/logo.svg') }}">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link rel="stylesheet" href="{{ asset('css/profile/usuario.css') }}">
     <link rel="stylesheet" href="{{ asset('css/i18n.css') }}">
