@@ -1,2 +1,5 @@
+[phases.setup]
+nixPkgs = ["php85", "php85Packages.composer", "php85Extensions.pdo", "php85Extensions.pdo_pgsql", "php85Extensions.pgsql", "php85Extensions.mbstring", "php85Extensions.tokenizer", "php85Extensions.xml", "php85Extensions.ctype", "php85Extensions.fileinfo", "php85Extensions.curl", "php85Extensions.openssl", "php85Extensions.bcmath", "nodePackages_latest.nodejs"]
+
 [phases.build]
 cmds = ["npm ci && npm run build"]
