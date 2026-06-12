@@ -9,7 +9,7 @@
         "php": "^8.2",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
-        "mercadopago/dx-php": "^3.11"
+        "mercadopago/dx-php": "^3.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -82,6 +82,8 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
+        },
+        "platform": {
         }
     },
     "minimum-stability": "stable",
